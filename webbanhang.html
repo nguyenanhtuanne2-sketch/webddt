@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHONE STORE - Cửa Hàng Điện Thoại & Công Nghệ Chính Hãng 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .glass-header { backdrop-filter: blur(12px); background-color: rgba(255, 255, 255, 0.92); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- TOP SYSTEM BANNER & ROLE SWITCHER -->
+    <div class="bg-slate-900 text-slate-200 text-xs py-2 px-4 shadow-inner">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-2">
+                <span class="bg-blue-600 text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wider">CHÍNH HÃNG</span>
+                <span>🔥 Đợt Giảm Giá Lớn 2026 - Hỗ trợ Trả góp 0% Lãi suất - Giao hàng 2H toàn quốc!</span>
+            </div>
+            <!-- Role Switcher -->
+            <div class="flex items-center gap-1 sm:gap-2">
+                <span class="text-slate-400 font-medium">Chế độ xem:</span>
+                <button onclick="switchRole('guest')" id="btn-role-guest" class="role-btn px-2.5 py-1 rounded-lg transition text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white">Khách Vãng Lai</button>
+                <button onclick="switchRole('customer')" id="btn-role-customer" class="role-btn px-2.5 py-1 rounded-lg transition text-xs font-semibold bg-blue-600 text-white shadow-sm">Khách Hàng</button>
+                <button onclick="switchRole('staff')" id="btn-role-staff" class="role-btn px-2.5 py-1 rounded-lg transition text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white">Nhân Viên</button>
+                <button onclick="switchRole('admin')" id="btn-role-admin" class="role-btn px-2.5 py-1 rounded-lg transition text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white">Quản Lý (Admin)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER NAVIGATION -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 gap-4">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('storefront')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
+                        <i class="fa-solid fa-mobile-screen-button text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-black tracking-tight text-slate-900 block leading-none">PHONE<span class="text-blue-600">STORE</span></span>
+                        <span class="text-[10px] text-slate-500 tracking-widest font-bold uppercase">Smart Technology Center</span>
+                    </div>
+                </div>
+
+                <!-- Global Search Bar -->
+                <div class="flex-1 max-w-md hidden md:block relative">
+                    <input type="text" id="global-search" onkeyup="handleGlobalSearch(event)" placeholder="Tìm kiếm iPhone 18 Pro Max, Galaxy S26 Ultra, Xiaomi 15 Pro..." class="w-full bg-slate-100 border border-slate-200 text-slate-800 rounded-full py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
+                    <button onclick="triggerSearch()" class="absolute right-1.5 top-1.5 bg-blue-600 text-white rounded-full w-7 h-7 flex items-center justify-center hover:bg-blue-700 transition">
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="navigateTo('storefront')" id="nav-storefront" class="nav-link px-3 py-2 text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-store"></i> <span class="hidden sm:inline">Trang Chủ</span>
+                    </button>
+                    <button onclick="navigateTo('warranty')" id="nav-warranty" class="nav-link px-3 py-2 text-sm font-semibold text-slate-600 hover:text-blue-600 flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved"></i> <span class="hidden sm:inline">Tra Cứu IMEI</span>
+                    </button>
+                    
+                    <!-- Compare Button -->
+                    <button onclick="openCompareModal()" class="relative px-3 py-2 text-sm font-semibold text-slate-600 hover:text-blue-600 flex items-center gap-1">
+                        <i class="fa-solid fa-code-compare"></i>
+                        <span class="hidden sm:inline">So Sánh</span>
+                        <span id="compare-badge" class="bg-orange-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Staff Portal Link -->
+                    <button onclick="navigateTo('staff')" id="nav-staff" class="nav-link hidden px-3 py-2 text-sm font-semibold text-purple-700 bg-purple-50 rounded-xl hover:bg-purple-100 flex items-center gap-1.5">
+                        <i class="fa-solid fa-boxes-packing"></i> <span>Quản Lý Đơn</span>
+                    </button>
+
+                    <!-- Admin Portal Link -->
+                    <button onclick="navigateTo('admin')" id="nav-admin" class="nav-link hidden px-3 py-2 text-sm font-semibold text-red-700 bg-red-50 rounded-xl hover:bg-red-100 flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders"></i> <span>Admin Panel</span>
+                    </button>
+
+                    <!-- Cart Icon -->
+                    <button onclick="openCartDrawer()" class="relative p-2 text-slate-700 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-bag-shopping text-xl"></i>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-600 text-white font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center shadow">0</span>
+                    </button>
+
+                    <!-- User Account Modal Toggle -->
+                    <button onclick="openAuthModal()" id="btn-auth" class="p-2 text-slate-700 hover:text-blue-600 transition">
+                        <i class="fa-regular fa-circle-user text-2xl"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- ALERT BANNER FOR SYSTEM MESSAGES -->
+    <div id="system-toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700">
+            <i id="toast-icon" class="fa-solid fa-circle-check text-green-400 text-lg"></i>
+            <span id="toast-message" class="text-sm font-medium">Thông báo hệ thống</span>
+        </div>
+    </div>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main id="app-viewport" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- PAGE 1: STOREFRONT & PRODUCTS -->
+        <section id="page-storefront" class="page-view space-y-8">
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 rounded-3xl p-6 sm:p-10 text-white shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-slate-800">
+                <div class="space-y-4 max-w-xl z-10 text-center md:text-left">
+                    <span class="inline-flex items-center gap-1.5 bg-blue-500/20 text-blue-300 border border-blue-400/30 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                        <i class="fa-solid fa-fire text-orange-400"></i> SIÊU BÃO CÔNG NGHỆ 2026
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">iPhone 18 Pro Max & Galaxy S26 Ultra</h1>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">Sở hữu ngay các siêu phẩm smartphone đỉnh cao thế hệ mới với Trợ lý AI tư vấn cấu hình, giảm ngay 300.000đ khi nhập mã <span class="font-mono bg-blue-600/40 px-2 py-0.5 rounded text-white font-bold">KM300K</span> và hỗ trợ Trả góp 0% lãi suất.</p>
+                    <div class="flex flex-wrap gap-3 justify-center md:justify-start pt-2">
+                        <button onclick="toggleChatbot(true)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-robot"></i> Trợ Lý AI Tư Vấn Nhu Cầu
+                        </button>
+                        <button onclick="scrollToProducts()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold px-6 py-3.5 rounded-xl transition text-sm">
+                            Xem Danh Sách Điện Thoại
+                        </button>
+                    </div>
+                </div>
+                <div class="relative z-10 flex justify-center w-full md:w-auto">
+                    <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=800&auto=format&fit=crop" alt="Flagship" class="relative rounded-2xl shadow-2xl max-w-xs sm:max-w-sm h-72 object-cover border border-slate-700">
+                </div>
+            </div>
+
+            <!-- Filters & Catalog Section -->
+            <div id="products-anchor" class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-4">
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-mobile-button text-blue-600"></i> Danh Mục Điện Thoại
+                    </h2>
+                    <button onclick="resetFilters()" class="text-xs text-blue-600 hover:underline font-semibold flex items-center gap-1">
+                        <i class="fa-solid fa-rotate-left"></i> Đặt lại bộ lọc
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Thương Hiệu</label>
+                        <select id="filter-brand" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="ALL">Tất cả thương hiệu</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Phân Khúc Giá</label>
+                        <select id="filter-segment" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="ALL">Tất cả phân khúc</option>
+                            <option value="BUDGET">Giá rẻ (Dưới 7 triệu)</option>
+                            <option value="MID">Tầm trung (7 - 18 triệu)</option>
+                            <option value="PREMIUM">Cao cấp Flagship (Trên 18 triệu)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Sắp Xếp Giá</label>
+                        <select id="filter-sort" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="DEFAULT">Mặc định</option>
+                            <option value="ASC">Giá tăng dần</option>
+                            <option value="DESC">Giá giảm dần</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Trạng Thái Kho</label>
+                        <select id="filter-stock" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="ALL">Tất cả</option>
+                            <option value="IN_STOCK">Còn hàng tại Showroom</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </section>
+
+        <!-- PAGE 2: WARRANTY LOOKUP BY IMEI -->
+        <section id="page-warranty" class="page-view hidden max-w-4xl mx-auto space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200 text-center space-y-6">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner border border-blue-100">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-black text-slate-900">Tra Cứu Bảo Hành Điện Tử IMEI</h2>
+                    <p class="text-sm text-slate-500 max-w-lg mx-auto">Nhập mã IMEI 15 chữ số in trên hộp hoặc bấm <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded font-bold text-slate-700">*#06#</span> trên bàn phím điện thoại để kiểm tra thời hạn bảo hành điện tử chính hãng.</p>
+                </div>
+                <div class="max-w-md mx-auto flex gap-2">
+                    <input type="text" id="imei-search-input" maxlength="15" placeholder="Nhập 15 chữ số IMEI..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono tracking-wide">
+                    <button onclick="searchWarrantyByIMEI()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition shadow-md">Tra Cứu</button>
+                </div>
+                <div class="text-xs text-slate-400">
+                    * Mã IMEI mẫu khả dụng: <span class="font-mono font-semibold text-blue-600 cursor-pointer underline" onclick="quickFillIMEI('358901234567891')">358901234567891</span> hoặc <span class="font-mono font-semibold text-blue-600 cursor-pointer underline" onclick="quickFillIMEI('864201987654321')">864201987654321</span>
+                </div>
+            </div>
+            <div id="warranty-result" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4"></div>
+        </section>
+
+        <!-- PAGE 3: STAFF ORDER MANAGEMENT & IMEI ASSIGNMENT -->
+        <section id="page-staff" class="page-view hidden space-y-6">
+            <div class="flex justify-between items-center bg-purple-900 text-white rounded-3xl p-6 shadow-md border border-purple-800">
+                <div>
+                    <h2 class="text-2xl font-black flex items-center gap-2"><i class="fa-solid fa-user-gear"></i> Portal Dành Cho Nhân Viên Bán Hàng</h2>
+                    <p class="text-purple-200 text-sm mt-1">Quản lý đơn hàng trực tuyến, gán mã IMEI từ kho và chuyển trạng thái giao hàng.</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs uppercase tracking-wider text-purple-300 font-bold">Đơn chờ xử lý</span>
+                    <div id="staff-pending-count" class="text-3xl font-black text-amber-400">0</div>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-700 flex justify-between items-center">
+                    <span>Danh Sách Đơn Đặt Hàng Mới</span>
+                    <button onclick="renderStaffOrders()" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrows-rotate"></i> Làm mới</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-100 text-slate-700 uppercase text-[11px] font-bold">
+                            <tr>
+                                <th class="p-3">Mã Đơn</th>
+                                <th class="p-3">Khách Hàng</th>
+                                <th class="p-3">Sản Phẩm Đặt</th>
+                                <th class="p-3">Tổng Tiền</th>
+                                <th class="p-3">Trạng Thái</th>
+                                <th class="p-3">Mã IMEI Gán</th>
+                                <th class="p-3 text-right">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staff-orders-tbody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: ADMIN CONTROL PANEL -->
+        <section id="page-admin" class="page-view hidden space-y-6">
+            <div class="flex justify-between items-center bg-slate-900 text-white rounded-3xl p-6 shadow-md border border-slate-800">
+                <div>
+                    <h2 class="text-2xl font-black flex items-center gap-2"><i class="fa-solid fa-sliders text-blue-500"></i> Admin Control Panel</h2>
+                    <p class="text-slate-400 text-sm mt-1">Quản lý toàn bộ hệ thống sản phẩm, cấu hình AI NLP, kho IMEI, mã giảm giá và báo cáo doanh thu.</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-2">
+                <button onclick="switchAdminTab('products')" id="admin-tab-products" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white">Quản Lý Sản Phẩm & NLP</button>
+                <button onclick="switchAdminTab('vouchers')" id="admin-tab-vouchers" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Mã Khuyến Mãi</button>
+                <button onclick="switchAdminTab('brands')" id="admin-tab-brands" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Thương Hiệu & Chi Nhánh</button>
+                <button onclick="switchAdminTab('inventory')" id="admin-tab-inventory" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Nhập Kho IMEI</button>
+                <button onclick="switchAdminTab('reviews')" id="admin-tab-reviews" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Duyệt Đánh Giá</button>
+                <button onclick="switchAdminTab('analytics')" id="admin-tab-analytics" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Báo Cáo Doanh Thu</button>
+                <button onclick="switchAdminTab('orders')" id="admin-tab-orders" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Quản Lý Đơn Hàng</button>
+                <button onclick="switchAdminTab('logs')" id="admin-tab-logs" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Nhật Ký & File TXT</button>
+            </div>
+            <div id="admin-content-area"></div>
+        </section>
+
+    </main>
+
+    <!-- FLOATING AI CHATBOT WIDGET -->
+    <div id="chatbot-widget" class="fixed bottom-6 right-6 z-40">
+        <button onclick="toggleChatbot()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full p-4 shadow-2xl flex items-center justify-center transition-all transform hover:scale-105 border border-blue-400/30">
+            <i class="fa-solid fa-robot text-2xl"></i>
+        </button>
+        <div id="chatbot-window" class="hidden absolute bottom-16 right-0 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col h-[520px] overflow-hidden">
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-4 flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold"><i class="fa-solid fa-robot text-xs"></i></div>
+                    <div>
+                        <h3 class="font-bold text-sm leading-none">Trợ Lý AI Tư Vấn PhoneStore</h3>
+                        <span class="text-[10px] text-slate-300">Tính toán độ phù hợp % chuẩn xác</span>
+                    </div>
+                </div>
+                <button onclick="toggleChatbot(false)" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 text-xs custom-scrollbar">
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-700 max-w-[85%] leading-relaxed">
+                    👋 Xin chào! Hãy nhập nhu cầu mua máy của bạn (Ví dụ: <i>"Tôi cần máy chơi game mượt, pin trâu sạc nhanh"</i>). Trợ lý AI sẽ tính toán % độ phù hợp!
+                </div>
+            </div>
+            <div class="p-3 bg-white border-t border-slate-200 flex gap-2">
+                <input type="text" id="chat-input" onkeyup="if(event.key==='Enter') sendChatMessage()" placeholder="Nhập nhu cầu (pin trâu, camera đẹp...)..." class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="sendChatMessage()" class="bg-blue-600 text-white rounded-xl px-3.5 py-2 font-bold hover:bg-blue-700 transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHOPPING CART & STEPPER DRAWER -->
+    <div id="cart-drawer-backdrop" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300" onclick="closeCartDrawer()"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+            <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-blue-600"></i> Giỏ Hàng & Thanh Toán</h3>
+            <button onclick="closeCartDrawer()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+        </div>
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200 flex justify-between text-[11px] font-bold text-slate-500">
+            <span id="step-lbl-1" class="text-blue-600">1. Giỏ hàng</span>
+            <span id="step-lbl-2">2. Thông tin</span>
+            <span id="step-lbl-3">3. Khuyến mãi</span>
+            <span id="step-lbl-4">4. Hoàn tất</span>
+        </div>
+        <div id="cart-drawer-content" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar"></div>
+        <div id="cart-drawer-footer" class="p-4 border-t border-slate-200 bg-slate-50 space-y-3"></div>
+    </div>
+
+    <!-- PRODUCT DETAIL & REVIEWS MODAL -->
+    <div id="modal-product-detail" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 relative custom-scrollbar p-6 space-y-6">
+            <button onclick="closeModal('modal-product-detail')" class="absolute top-4 right-4 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-full w-8 h-8 flex items-center justify-center font-bold">✕</button>
+            <div id="modal-product-content"></div>
+        </div>
+    </div>
+
+    <!-- PRODUCT COMPARISON MODAL -->
+    <div id="modal-compare" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 relative custom-scrollbar p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i class="fa-solid fa-code-compare text-blue-600"></i> So Sánh Thông Số Kỹ Thuật Điện Thoại (Tối đa 3 máy)</h3>
+                <button onclick="closeModal('modal-compare')" class="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div id="compare-table-container" class="overflow-x-auto"></div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="modal-auth" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 relative p-6 space-y-4">
+            <button onclick="closeModal('modal-auth')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl">✕</button>
+            <h3 id="auth-title" class="text-xl font-bold text-slate-900">Đăng Nhập Tài Khoản</h3>
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Email</label>
+                    <input type="email" id="auth-email" required placeholder="user@phonestore.vn" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Mật khẩu</label>
+                    <input type="password" id="auth-pass" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div id="auth-extra-fields" class="hidden space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Họ & Tên</label>
+                        <input type="text" id="auth-fullname" placeholder="Nguyễn Văn A" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Số điện thoại</label>
+                        <input type="tel" id="auth-phone" placeholder="0905123456" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow">Đăng Nhập</button>
+            </form>
+            <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
+                <span id="auth-toggle-msg">Chưa có tài khoản?</span>
+                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-blue-600 font-bold hover:underline ml-1">Đăng ký ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROLE LOGIN MODAL (Admin / Nhân viên) -->
+    <div id="modal-role-login" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl p-6 space-y-4 relative">
+            <button onclick="closeModal('modal-role-login')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl">✕</button>
+            <h3 id="role-login-title" class="text-lg font-bold text-slate-900">Đăng nhập</h3>
+            <form onsubmit="submitRoleLogin(event)" class="space-y-3">
+                <div><label class="block text-xs font-semibold text-slate-600 mb-1">Tên đăng nhập</label><input id="role-login-user" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm"></div>
+                <div><label class="block text-xs font-semibold text-slate-600 mb-1">Mật khẩu</label><input id="role-login-pass" type="password" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm"></div>
+                <div id="role-login-err" class="hidden text-xs font-semibold text-red-600">Sai tên đăng nhập hoặc mật khẩu!</div>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl">Đăng Nhập</button>
+            </form>
+        </div>
+    </div>
+    <!-- ORDER DETAIL MODAL -->
+    <div id="modal-order-detail" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative custom-scrollbar">
+            <button onclick="closeModal('modal-order-detail')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 rounded-full w-8 h-8 font-bold">✕</button>
+            <div id="order-detail-content"></div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        const DEFAULT_BRANDS = [
+            { id: "B1", name: "Apple", origin: "Mỹ" },
+            { id: "B2", name: "Samsung", origin: "Hàn Quốc" },
+            { id: "B3", name: "Xiaomi", origin: "Trung Quốc" },
+            { id: "B4", name: "OPPO", origin: "Trung Quốc" },
+            { id: "B5", name: "vivo", origin: "Trung Quốc" },
+            { id: "B6", name: "ASUS", origin: "Đài Loan" },
+            { id: "B7", name: "Google", origin: "Mỹ" },
+            { id: "B8", name: "realme", origin: "Trung Quốc" },
+            { id: "B9", name: "POCO", origin: "Trung Quốc" },
+            { id: "B10", name: "Infinix", origin: "Trung Quốc" },
+            { id: "B11", name: "Tecno", origin: "Trung Quốc" },
+            { id: "B12", name: "Sony", origin: "Nhật Bản" }
+        ];
+
+        const DEFAULT_STORES = [
+            { id: "S1", name: "Showroom Nguyễn Văn Linh", address: "254 Nguyễn Văn Linh, Q. Thanh Khê, Đà Nẵng", phone: "0236 3888 111" },
+            { id: "S2", name: "Showroom Quang Trung", address: "03 Quang Trung, Q. Hải Châu, Đà Nẵng", phone: "0236 3888 222" }
+        ];
+
+        const DEFAULT_PRODUCTS = [
+            {
+                id: "P1", brandId: "B1", brandName: "Apple", name: "iPhone 18 Pro Max", segment: "PREMIUM", warrantyMonths: 12,
+                specs: { ram: "12GB", storage: "256GB", battery: "4850mAh", chip: "Apple A20 Bionic 2nm", camera: "48MP Dual Fusion 8K", screen: "6.9 inch Super Retina XDR 120Hz" },
+                nlpWeights: { "choi game": 98, "pin trau": 92, "camera dep": 99, "sac nhanh": 88, "sang trong": 100, "cao cap": 100, "man hinh dep": 98 },
+                variants: [
+                    { sku: "IP18PM-256-TI", color: "Titan Sa Mạc", storage: "256GB", price: 34990000, stock: 15 },
+                    { sku: "IP18PM-512-TI", color: "Titan Sa Mạc", storage: "512GB", price: 40990000, stock: 8 }
+                ],
+                image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=800&auto=format&fit=crop",
+                description: "Flagship đỉnh cao 2026 của Apple với vỏ khung Titan cấp độ vũ trụ, chip A20 Bionic và cụm camera zoom quang học vượt trội."
+            },
+            {
+                id: "P2", brandId: "B1", brandName: "Apple", name: "iPhone 18 Pro", segment: "PREMIUM", warrantyMonths: 12,
+                specs: { ram: "12GB", storage: "128GB", battery: "4200mAh", chip: "Apple A20 Bionic", camera: "48MP Triple Pro Camera", screen: "6.3 inch Super Retina XDR" },
+                nlpWeights: { "choi game": 96, "camera dep": 98, "nho gon": 95, "sang trong": 98, "cao cap": 98, "man hinh dep": 96 },
+                variants: [{ sku: "IP18P-128-DEN", color: "Titan Đen", storage: "128GB", price: 29990000, stock: 12 }],
+                image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=800&auto=format&fit=crop",
+                description: "Thiết kế nhỏ gọn chuẩn Pro, sức mạnh đồ họa đỉnh cao cùng hệ thống quay phim điện ảnh ProRes 4K."
+            },
+            {
+                id: "P9", brandId: "B2", brandName: "Samsung", name: "Galaxy S26 Ultra 5G", segment: "PREMIUM", warrantyMonths: 12,
+                specs: { ram: "16GB", storage: "512GB", battery: "5500mAh", chip: "Snapdragon 8 Gen 5 for Galaxy", camera: "200MP Quad Zoom 100x", screen: "6.8 inch Dynamic AMOLED 2X 120Hz" },
+                nlpWeights: { "choi game": 99, "pin trau": 96, "camera dep": 97, "sac nhanh": 92, "buot spen": 100, "cao cap": 100, "man hinh dep": 99 },
+                variants: [{ sku: "S26U-512-XAM", color: "Xám Titanium", storage: "512GB", price: 33990000, stock: 12 }],
+                image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=800&auto=format&fit=crop",
+                description: "Quyền năng Galaxy AI đỉnh cao tích hợp Bút S-Pen thông minh và khả năng chụp đêm siêu thực."
+            },
+            {
+                id: "P17", brandId: "B3", brandName: "Xiaomi", name: "Xiaomi 15 Pro Leica", segment: "MID", warrantyMonths: 18,
+                specs: { ram: "12GB", storage: "256GB", battery: "6100mAh", chip: "Snapdragon 8 Gen 4", camera: "50MP Leica Quad Master", screen: "6.73 inch 2K WQHD+ AMOLED" },
+                nlpWeights: { "choi game": 94, "pin trau": 100, "camera dep": 93, "sac nhanh": 100, "gia tot": 95, "man hinh dep": 96 },
+                variants: [{ sku: "MI15P-256-XANH", color: "Xanh Ngọc", storage: "256GB", price: 17990000, stock: 25 }],
+                image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=800&auto=format&fit=crop",
+                description: "Vua dung lượng pin 6100mAh tích hợp sạc siêu tốc HyperCharge 120W cùng thấu kính nhiếp ảnh Leica chuyên nghiệp."
+            }
+        ];
+
+        const DEFAULT_VOUCHERS = [
+            { code: "KM300K", type: "FIXED", value: 300000, minOrder: 5000000, maxDiscount: 300000, usageLeft: 50, active: true },
+            { code: "NEWYEAR2026", type: "PERCENT", value: 5, minOrder: 10000000, maxDiscount: 1500000, usageLeft: 25, active: true }
+        ];
+
+        const DEFAULT_IMEI_WAREHOUSE = [
+            { imei: "358901234567891", sku: "IP18PM-256-TI", productName: "iPhone 18 Pro Max (Titan Sa Mạc)", status: "AVAILABLE", orderId: null },
+            { imei: "358901234567892", sku: "IP18PM-256-TI", productName: "iPhone 18 Pro Max (Titan Sa Mạc)", status: "ASSIGNED", orderId: "ORD-1001", customer: "Nguyễn Văn Nam", phone: "0905111222", activeDate: "2026-02-15", expireDate: "2027-02-15" }
+        ];
+
+        const DEFAULT_ORDERS = [
+            {
+                orderId: "ORD-1001",
+                customerName: "Nguyễn Văn Nam",
+                phone: "0905111222",
+                address: "54 Lê Duẩn, Đà Nẵng",
+                items: [{ sku: "IP18PM-256-TI", name: "iPhone 18 Pro Max", color: "Titan Sa Mạc", storage: "256GB", price: 34990000, qty: 1 }],
+                subtotal: 34990000,
+                discount: 300000,
+                total: 34690000,
+                status: "DELIVERED",
+                assignedIMEI: "358901234567892",
+                createdAt: "2026-02-15 09:30"
+            }
+        ];
+
+        const DEFAULT_REVIEWS = [
+            { id: "REV-1", sku: "IP18PM-256-TI", userName: "Nguyễn Văn Nam", rating: 5, comment: "Máy dùng quá mượt, chụp đêm sắc nét, giao hàng siêu nhanh!", approved: true, date: "2026-02-16" }
+        ];
+
+        function getStorage(key, fallback) {
+            const data = localStorage.getItem("STORE_" + key);
+            return data ? JSON.parse(data) : fallback;
+        }
+        function setStorage(key, value) {
+            localStorage.setItem("STORE_" + key, JSON.stringify(value));
+        }
+
+        let appState = {
+            currentRole: 'customer',
+            currentUser: { email: 'khachang@phonestore.vn', name: 'Khách Hàng' },
+            brands: getStorage("BRANDS", DEFAULT_BRANDS),
+            stores: getStorage("STORES", DEFAULT_STORES),
+            products: getStorage("PRODUCTS", DEFAULT_PRODUCTS),
+            vouchers: getStorage("VOUCHERS", DEFAULT_VOUCHERS),
+            imeiWarehouse: getStorage("IMEI_WH", DEFAULT_IMEI_WAREHOUSE),
+            orders: getStorage("ORDERS", DEFAULT_ORDERS),
+            reviews: getStorage("REVIEWS", DEFAULT_REVIEWS),
+            cart: [],
+            compareList: [],
+            checkoutStep: 1,
+            appliedVoucher: null,
+            installmentPlan: null
+        };
+
+        function persistData() {
+            setStorage("BRANDS", appState.brands);
+            setStorage("STORES", appState.stores);
+            setStorage("PRODUCTS", appState.products);
+            setStorage("VOUCHERS", appState.vouchers);
+            setStorage("IMEI_WH", appState.imeiWarehouse);
+            setStorage("ORDERS", appState.orders);
+            setStorage("REVIEWS", appState.reviews);
+        }
+
+        window.onload = function() {
+            renderBrandOptions();
+            renderProductGrid(appState.products);
+            updateCompareBadge();
+            renderStaffOrders();
+            renderAdminProducts();
+        };
+
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('text-blue-600', 'font-bold'));
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) activeNav.classList.add('text-blue-600', 'font-bold');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchRole(role) {
+            appState.currentRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.className = "role-btn px-2.5 py-1 rounded-lg transition text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white";
+            });
+            document.getElementById(`btn-role-${role}`).className = "role-btn px-2.5 py-1 rounded-lg transition text-xs font-semibold bg-blue-600 text-white shadow-sm";
+
+            const staffNav = document.getElementById('nav-staff');
+            const adminNav = document.getElementById('nav-admin');
+
+            if (role === 'staff') {
+                staffNav.classList.remove('hidden');
+                adminNav.classList.add('hidden');
+                navigateTo('staff');
+            } else if (role === 'admin') {
+                staffNav.classList.remove('hidden');
+                adminNav.classList.remove('hidden');
+                navigateTo('admin');
+            } else {
+                staffNav.classList.add('hidden');
+                adminNav.classList.add('hidden');
+                navigateTo('storefront');
+            }
+            showToast(`Đã chuyển vai trò sử dụng: ${role.toUpperCase()}`);
+        }
+
+        function showToast(msg, isSuccess = true) {
+            const toast = document.getElementById('system-toast');
+            const icon = document.getElementById('toast-icon');
+            const text = document.getElementById('toast-message');
+
+            text.innerText = msg;
+            icon.className = isSuccess ? "fa-solid fa-circle-check text-green-400 text-lg" : "fa-solid fa-circle-exclamation text-red-400 text-lg";
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function openModal(modalId) { document.getElementById(modalId).classList.remove('hidden'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.add('hidden'); }
+
+        function formatVND(val) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val);
+        }
+
+        function scrollToProducts() {
+            document.getElementById('products-anchor').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderBrandOptions() {
+            const select = document.getElementById('filter-brand');
+            select.innerHTML = `<option value="ALL">Tất cả thương hiệu</option>` +
+                appState.brands.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+        }
+
+        function renderProductGrid(products) {
+            const grid = document.getElementById('product-grid');
+            if (!products || products.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-slate-500 bg-white rounded-3xl border border-slate-200">
+                        <i class="fa-solid fa-box-open text-5xl mb-3 text-slate-300"></i>
+                        <p class="font-bold text-base">Không tìm thấy sản phẩm phù hợp bộ lọc.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = products.map(p => {
+                const mainVariant = p.variants[0];
+                const isCompared = appState.compareList.includes(p.id);
+
+                return `
+                    <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                        <div class="relative p-5 text-center cursor-pointer bg-slate-50/50" onclick="viewProductDetail('${p.id}')">
+                            <span class="absolute top-4 left-4 bg-white/80 backdrop-blur border border-slate-200 text-slate-800 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">${p.brandName}</span>
+                            <img src="${p.image}" alt="${p.name}" class="h-52 w-full object-cover rounded-2xl mx-auto group-hover:scale-105 transition duration-500 shadow-sm">
+                        </div>
+                        <div class="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 onclick="viewProductDetail('${p.id}')" class="font-extrabold text-slate-900 text-base leading-snug line-clamp-1 cursor-pointer hover:text-blue-600 transition">${p.name}</h3>
+                                <div class="flex items-center gap-2 text-xs text-slate-500 mt-1.5">
+                                    <span class="bg-slate-100 font-semibold px-2 py-0.5 rounded-md text-[11px]">${mainVariant.storage}</span>
+                                    <span>•</span>
+                                    <span class="truncate">${p.specs.chip}</span>
+                                </div>
+                                <div class="mt-3 text-xl font-black text-blue-600">${formatVND(mainVariant.price)}</div>
+                            </div>
+                            <div class="space-y-2 pt-3 border-t border-slate-100">
+                                <div class="flex items-center justify-between gap-2">
+                                    <button onclick="buyNow('${p.id}', '${mainVariant.sku}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-bolt"></i> Mua Ngay
+                                    </button>
+                                    <button onclick="addToCart('${p.id}', '${mainVariant.sku}')" class="bg-blue-50 text-blue-600 hover:bg-blue-100 p-2.5 rounded-xl text-xs font-bold transition" title="Thêm giỏ hàng">
+                                        <i class="fa-solid fa-cart-plus text-base"></i>
+                                    </button>
+                                </div>
+                                <button onclick="toggleCompare('${p.id}')" class="w-full text-[11px] font-semibold ${isCompared ? 'text-orange-600 bg-orange-50 border-orange-200' : 'text-slate-500 hover:text-blue-600'} py-1.5 rounded-lg border border-slate-200 transition flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-code-compare"></i> ${isCompared ? 'Đã thêm so sánh' : 'So sánh cấu hình'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function applyFilters() {
+            const brand = document.getElementById('filter-brand').value;
+            const segment = document.getElementById('filter-segment').value;
+            const sort = document.getElementById('filter-sort').value;
+            const stock = document.getElementById('filter-stock').value;
+
+            let result = [...appState.products];
+            if (brand !== 'ALL') result = result.filter(p => p.brandId === brand);
+            if (segment !== 'ALL') result = result.filter(p => p.segment === segment);
+            if (stock === 'IN_STOCK') {
+                result = result.filter(p => p.variants.some(v => v.stock > 0));
+            }
+            if (sort === 'ASC') {
+                result.sort((a, b) => a.variants[0].price - b.variants[0].price);
+            } else if (sort === 'DESC') {
+                result.sort((a, b) => b.variants[0].price - a.variants[0].price);
+            }
+            renderProductGrid(result);
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-brand').value = 'ALL';
+            document.getElementById('filter-segment').value = 'ALL';
+            document.getElementById('filter-sort').value = 'DEFAULT';
+            document.getElementById('filter-stock').value = 'ALL';
+            document.getElementById('global-search').value = '';
+            renderProductGrid(appState.products);
+        }
+
+        function handleGlobalSearch(e) {
+            if (e.key === 'Enter') triggerSearch();
+        }
+
+        function triggerSearch() {
+            const query = document.getElementById('global-search').value.toLowerCase().trim();
+            if (!query) {
+                renderProductGrid(appState.products);
+                return;
+            }
+            const filtered = appState.products.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.brandName.toLowerCase().includes(query) ||
+                p.description.toLowerCase().includes(query)
+            );
+            renderProductGrid(filtered);
+        }
+
+        function viewProductDetail(productId) {
+            const p = appState.products.find(x => x.id === productId);
+            if (!p) return;
+
+            const reviews = appState.reviews.filter(r => p.variants.some(v => v.sku === r.sku) && r.approved);
+            const content = document.getElementById('modal-product-content');
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 rounded-2xl p-4 flex items-center justify-center border border-slate-200">
+                        <img src="${p.image}" alt="${p.name}" class="max-h-80 w-full object-cover rounded-xl shadow-md">
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase">${p.brandName}</span>
+                            <h2 class="text-2xl font-black text-slate-900 mt-2">${p.name}</h2>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">${p.description}</p>
+                        </div>
+                        <div class="space-y-2 border-t border-b border-slate-100 py-3">
+                            <label class="block text-xs font-bold text-slate-700">Chọn Phiên Bản & Màu Sắc:</label>
+                            <div class="grid grid-cols-1 gap-2" id="detail-variants-list">
+                                ${p.variants.map((v, idx) => `
+                                    <div onclick="selectDetailVariant('${p.id}', '${v.sku}')" id="variant-opt-${v.sku}" class="cursor-pointer border ${idx === 0 ? 'border-blue-600 bg-blue-50/50' : 'border-slate-200'} rounded-xl p-3 flex justify-between items-center transition">
+                                        <div>
+                                            <div class="font-bold text-xs text-slate-800">${v.color} - ${v.storage}</div>
+                                            <div class="text-[11px] text-slate-500">Mã SKU: ${v.sku} | Tồn kho: <span class="font-semibold text-green-600">${v.stock} máy</span></div>
+                                        </div>
+                                        <div class="font-black text-blue-600 text-sm">${formatVND(v.price)}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="buyNowSelected('${p.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-bolt"></i> Mua Ngay
+                            </button>
+                            <button onclick="addToCartSelected('${p.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-3 rounded-xl transition text-sm">
+                                <i class="fa-solid fa-cart-plus"></i> Thêm Giỏ Hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 border-t border-slate-200 pt-4 space-y-2">
+                    <h4 class="font-bold text-sm text-slate-900">Thông Số Kỹ Thuật Chi Tiết:</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><span class="text-slate-500 block">Chip xử lý:</span> <span class="font-bold text-slate-800">${p.specs.chip}</span></div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><span class="text-slate-500 block">Bộ nhớ RAM:</span> <span class="font-bold text-slate-800">${p.specs.ram}</span></div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><span class="text-slate-500 block">Dung lượng Pin:</span> <span class="font-bold text-slate-800">${p.specs.battery}</span></div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><span class="text-slate-500 block">Camera:</span> <span class="font-bold text-slate-800">${p.specs.camera}</span></div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><span class="text-slate-500 block">Màn hình:</span> <span class="font-bold text-slate-800">${p.specs.screen}</span></div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><span class="text-slate-500 block">Bảo hành chính hãng:</span> <span class="font-bold text-blue-600">${p.warrantyMonths} Tháng (IMEI)</span></div>
+                    </div>
+                </div>
+            `;
+
+            appState.selectedVariantSku = p.variants[0].sku;
+            openModal('modal-product-detail');
+        }
+
+        function selectDetailVariant(productId, sku) {
+            appState.selectedVariantSku = sku;
+            const p = appState.products.find(x => x.id === productId);
+            p.variants.forEach(v => {
+                const el = document.getElementById(`variant-opt-${v.sku}`);
+                if (el) {
+                    if (v.sku === sku) {
+                        el.className = "cursor-pointer border border-blue-600 bg-blue-50/50 rounded-xl p-3 flex justify-between items-center transition";
+                    } else {
+                        el.className = "cursor-pointer border border-slate-200 rounded-xl p-3 flex justify-between items-center transition";
+                    }
+                }
+            });
+        }
+
+        function buyNowSelected(productId) {
+            closeModal('modal-product-detail');
+            buyNow(productId, appState.selectedVariantSku);
+        }
+
+        function addToCartSelected(productId) {
+            addToCart(productId, appState.selectedVariantSku);
+        }
+
+        // Chatbot NLP Logic
+        function toggleChatbot(forceOpen = null) {
+            const win = document.getElementById('chatbot-window');
+            if (forceOpen !== null) {
+                if (forceOpen) win.classList.remove('hidden');
+                else win.classList.add('hidden');
+            } else {
+                win.classList.toggle('hidden');
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const txt = input.value.trim();
+            if (!txt) return;
+
+            appendMessage(txt, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                const res = processNLPQuery(txt);
+                renderChatbotResponse(res);
+            }, 500);
+        }
+
+        function appendMessage(text, sender) {
+            const msgLog = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            if (sender === 'user') {
+                div.className = "flex justify-end";
+                div.innerHTML = `<div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-none text-xs max-w-[85%]">${text}</div>`;
+            } else {
+                div.className = "flex justify-start";
+                div.innerHTML = `<div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-700 text-xs max-w-[85%] shadow-sm space-y-2">${text}</div>`;
+            }
+            msgLog.appendChild(div);
+            msgLog.scrollTop = msgLog.scrollHeight;
+        }
+
+        function processNLPQuery(query) {
+            const normQuery = query.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[đĐ]/g, "d");
+
+            const intentDictionary = [
+                { key: "choi game", terms: ["choi game", "game", "lien quan", "pubg", "muot", "tan nhiet"] },
+                { key: "pin trau", terms: ["pin trau", "pin khoe", "pin dung lau", "6000mah", "5000mah"] },
+                { key: "camera dep", terms: ["camera dep", "chup anh", "chup hinh", "zoom", "leica", "zeiss"] },
+                { key: "sac nhanh", terms: ["sac nhanh", "120w", "80w", "67w"] },
+                { key: "sang trong", terms: ["sang trong", "dang cap", "titan"] },
+                { key: "cao cap", terms: ["cao cap", "flagship", "pro max", "ultra"] }
+            ];
+
+            let matchedKeys = [];
+            intentDictionary.forEach(item => {
+                if (item.terms.some(term => normQuery.includes(term))) {
+                    if (!matchedKeys.includes(item.key)) matchedKeys.push(item.key);
+                }
+            });
+
+            if (matchedKeys.length === 0) matchedKeys = ["choi game", "pin trau"];
+
+            const scoredProducts = appState.products.map(p => {
+                let wMatch = 0;
+                let wTotal = 0;
+                matchedKeys.forEach(kw => {
+                    const weight = p.nlpWeights[kw] !== undefined ? p.nlpWeights[kw] : 50;
+                    wMatch += weight;
+                    wTotal += 100;
+                });
+                const scorePercent = Math.min(100, Math.round((wMatch / wTotal) * 100));
+                return { product: p, score: scorePercent };
+            });
+
+            scoredProducts.sort((a, b) => b.score - a.score);
+            return { keywords: matchedKeys, topResults: scoredProducts.slice(0, 3) };
+        }
+
+        function renderChatbotResponse(res) {
+            let html = `<div>🤖 <b>Kết quả gợi ý từ Trợ lý AI:</b></div>`;
+            html += `<div class="space-y-2 mt-2">`;
+            res.topResults.forEach(item => {
+                const p = item.product;
+                const price = p.variants[0].price;
+                html += `
+                    <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="font-bold text-blue-700 text-xs">${p.name}</div>
+                            <div class="text-[10px] text-slate-500">${formatVND(price)} | Phù hợp: <span class="font-black text-green-600">${item.score}%</span></div>
+                        </div>
+                        <button onclick="buyNow('${p.id}', '${p.variants[0].sku}')" class="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg">Xem</button>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            appendMessage(html, 'bot');
+        }
+
+        // Comparison & Cart logic
+        function toggleCompare(productId) {
+            const idx = appState.compareList.indexOf(productId);
+            if (idx > -1) {
+                appState.compareList.splice(idx, 1);
+                showToast("Đã xóa sản phẩm khỏi so sánh");
+            } else {
+                if (appState.compareList.length >= 3) {
+                    showToast("Chỉ so sánh tối đa 3 sản phẩm!", false);
+                    return;
+                }
+                appState.compareList.push(productId);
+                showToast("Đã thêm vào so sánh");
+            }
+            updateCompareBadge();
+            renderProductGrid(appState.products);
+        }
+
+        function updateCompareBadge() {
+            document.getElementById('compare-badge').innerText = appState.compareList.length;
+        }
+
+        function openCompareModal() {
+            if (appState.compareList.length === 0) {
+                showToast("Chưa chọn sản phẩm nào để so sánh!", false);
+                return;
+            }
+            const items = appState.compareList.map(id => appState.products.find(p => p.id === id));
+            const container = document.getElementById('compare-table-container');
+
+            container.innerHTML = `
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200">
+                            <th class="p-3 w-32 font-bold text-slate-700">Thông Số</th>
+                            ${items.map(p => `
+                                <th class="p-3 text-center min-w-[180px]">
+                                    <img src="${p.image}" class="h-24 mx-auto object-cover rounded-xl mb-2">
+                                    <div class="font-bold text-slate-900 text-sm">${p.name}</div>
+                                    <div class="text-blue-600 font-bold mt-1">${formatVND(p.variants[0].price)}</div>
+                                </th>
+                            `).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr><td class="p-3 font-semibold bg-slate-50">Chip CPU</td>${items.map(p => `<td class="p-3 text-center font-bold text-blue-700">${p.specs.chip}</td>`).join('')}</tr>
+                        <tr><td class="p-3 font-semibold bg-slate-50">RAM</td>${items.map(p => `<td class="p-3 text-center">${p.specs.ram}</td>`).join('')}</tr>
+                        <tr><td class="p-3 font-semibold bg-slate-50">Pin</td>${items.map(p => `<td class="p-3 text-center">${p.specs.battery}</td>`).join('')}</tr>
+                        <tr><td class="p-3 font-semibold bg-slate-50">Bảo hành</td>${items.map(p => `<td class="p-3 text-center font-bold text-green-600">${p.warrantyMonths} Tháng</td>`).join('')}</tr>
+                    </tbody>
+                </table>
+            `;
+            openModal('modal-compare');
+        }
+
+        function openCartDrawer() {
+            document.getElementById('cart-drawer-backdrop').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('cart-drawer-backdrop').classList.remove('opacity-0');
+                document.getElementById('cart-drawer').classList.remove('translate-x-full');
+            }, 10);
+            renderCartContent();
+        }
+
+        function closeCartDrawer() {
+            document.getElementById('cart-drawer').classList.add('translate-x-full');
+            document.getElementById('cart-drawer-backdrop').classList.add('opacity-0');
+            setTimeout(() => document.getElementById('cart-drawer-backdrop').classList.add('hidden'), 300);
+        }
+
+        function addToCart(productId, sku) {
+            const p = appState.products.find(x => x.id === productId);
+            const variant = p.variants.find(v => v.sku === sku);
+            const existing = appState.cart.find(c => c.sku === sku);
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                appState.cart.push({
+                    productId: p.id,
+                    sku: variant.sku,
+                    name: p.name,
+                    color: variant.color,
+                    storage: variant.storage,
+                    price: variant.price,
+                    image: p.image,
+                    qty: 1
+                });
+            }
+            updateCartBadge();
+            showToast(`Đã thêm ${p.name} vào giỏ hàng`);
+        }
+
+        function buyNow(productId, sku) {
+            addToCart(productId, sku);
+            appState.checkoutStep = 1;
+            openCartDrawer();
+        }
+
+        function updateCartBadge() {
+            const count = appState.cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-badge').innerText = count;
+        }
+
+        function updateQty(sku, delta) {
+            const item = appState.cart.find(c => c.sku === sku);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) appState.cart = appState.cart.filter(c => c.sku !== sku);
+            updateCartBadge();
+            renderCartContent();
+        }
+
+        function renderCartContent() {
+            const container = document.getElementById('cart-drawer-content');
+            const footer = document.getElementById('cart-drawer-footer');
+            const step = appState.checkoutStep;
+
+            for (let i = 1; i <= 4; i++) {
+                const el = document.getElementById(`step-lbl-${i}`);
+                if (i === step) el.className = "text-blue-600 font-black underline";
+                else if (i < step) el.className = "text-green-600 font-semibold";
+                else el.className = "text-slate-400";
+            }
+
+            if (appState.cart.length === 0 && step === 1) {
+                container.innerHTML = `<div class="py-16 text-center text-slate-400"><p>Giỏ hàng trống</p></div>`;
+                footer.innerHTML = '';
+                return;
+            }
+
+            const subtotal = appState.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            let discountAmount = 0;
+            if (appState.appliedVoucher) {
+                const v = appState.appliedVoucher;
+                if (v.type === 'FIXED') discountAmount = v.value;
+                else discountAmount = Math.min((subtotal * v.value) / 100, v.maxDiscount);
+            }
+            const grandTotal = Math.max(0, subtotal - discountAmount);
+
+            if (step === 1) {
+                container.innerHTML = appState.cart.map(item => `
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center gap-3 text-xs">
+                        <img src="${item.image}" class="w-14 h-14 object-cover rounded-xl">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-slate-900">${item.name}</h4>
+                            <span class="text-slate-500">${item.color} - ${item.storage}</span>
+                            <div class="font-bold text-blue-600 mt-1">${formatVND(item.price)}</div>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white rounded-lg border p-1">
+                            <button onclick="updateQty('${item.sku}', -1)" class="px-1.5 font-bold">-</button>
+                            <span class="font-bold">${item.qty}</span>
+                            <button onclick="updateQty('${item.sku}', 1)" class="px-1.5 font-bold">+</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                footer.innerHTML = `
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-medium">Tạm tính:</span>
+                        <span class="font-bold text-slate-900">${formatVND(subtotal)}</span>
+                    </div>
+                    <button onclick="setCheckoutStep(2)" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md text-xs">Tiếp Tục Nhập Thông Tin</button>
+                `;
+            } else if (step === 2) {
+                container.innerHTML = `
+                    <form class="space-y-3 text-xs">
+                        <h4 class="font-bold text-sm text-slate-900">Thông Tin Giao Hàng:</h4>
+                        <div><label class="font-semibold">Họ tên:</label><input type="text" id="cust-name" value="Nguyễn Văn A" class="w-full border rounded-xl p-2.5 mt-1"></div>
+                        <div><label class="font-semibold">Số điện thoại:</label><input type="tel" id="cust-phone" value="0905123456" class="w-full border rounded-xl p-2.5 mt-1"></div>
+                        <div><label class="font-semibold">Địa chỉ:</label><textarea id="cust-address" class="w-full border rounded-xl p-2.5 mt-1">254 Nguyễn Văn Linh, Đà Nẵng</textarea></div>
+                    </form>
+                `;
+                footer.innerHTML = `
+                    <div class="flex gap-2">
+                        <button onclick="setCheckoutStep(1)" class="w-1/3 bg-slate-200 font-bold py-3 rounded-xl text-xs">Quay Lại</button>
+                        <button onclick="setCheckoutStep(3)" class="w-2/3 bg-blue-600 text-white font-bold py-3 rounded-xl text-xs shadow-md">Tiếp Tục (Voucher)</button>
+                    </div>
+                `;
+            } else if (step === 3) {
+                container.innerHTML = `
+                    <div class="space-y-3 text-xs">
+                        <h4 class="font-bold text-sm">Mã Khuyến Mãi:</h4>
+                        <div class="flex gap-2">
+                            <input type="text" id="voucher-code-input" placeholder="KM300K..." class="flex-1 border rounded-xl p-2.5 font-mono">
+                            <button onclick="applyVoucherCode()" class="bg-slate-800 text-white px-4 rounded-xl font-bold">Áp dụng</button>
+                        </div>
+                        ${appState.appliedVoucher ? `<div class="bg-green-50 p-2.5 rounded-xl text-green-800 font-bold">✓ Đã áp dụng mã: -${formatVND(discountAmount)}</div>` : ''}
+                    </div>
+                `;
+                footer.innerHTML = `
+                    <div class="flex justify-between font-bold text-blue-600 text-sm"><span>Tổng thanh toán:</span><span>${formatVND(grandTotal)}</span></div>
+                    <div class="flex gap-2">
+                        <button onclick="setCheckoutStep(2)" class="w-1/3 bg-slate-200 font-bold py-3 rounded-xl text-xs">Quay Lại</button>
+                        <button onclick="setCheckoutStep(4)" class="w-2/3 bg-blue-600 text-white font-bold py-3 rounded-xl text-xs shadow-md">Xác Nhận</button>
+                    </div>
+                `;
+            } else if (step === 4) {
+                container.innerHTML = `<div class="space-y-2 text-xs"><b>Xác nhận đặt hàng với tổng số tiền:</b> <span class="text-blue-600 font-black text-sm">${formatVND(grandTotal)}</span></div>`;
+                footer.innerHTML = `<button onclick="submitOrderFinal()" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl text-xs shadow-md">Đặt Hàng Ngay</button>`;
+            }
+        }
+
+        function setCheckoutStep(step) {
+            appState.checkoutStep = step;
+            renderCartContent();
+        }
+
+        function applyVoucherCode() {
+            const code = document.getElementById('voucher-code-input').value.trim().toUpperCase();
+            const v = appState.vouchers.find(x => x.code === code && x.active);
+            if (!v) { showToast("Mã không hợp lệ!", false); return; }
+            appState.appliedVoucher = v;
+            showToast("Áp dụng mã giảm giá thành công!");
+            renderCartContent();
+        }
+
+        function submitOrderFinal() {
+            const newOrder = {
+                orderId: "ORD-" + Math.floor(1000 + Math.random() * 9000),
+                customerName: document.getElementById('cust-name')?.value || "Khách",
+                phone: document.getElementById('cust-phone')?.value || "0905123456",
+                address: document.getElementById('cust-address')?.value || "Đà Nẵng",
+                items: [...appState.cart],
+                total: appState.cart.reduce((s, i) => s + i.price * i.qty, 0),
+                status: "PENDING",
+                assignedIMEI: null,
+                createdAt: new Date().toISOString().replace('T', ' ').substring(0, 16)
+            };
+            appState.orders.unshift(newOrder);
+            persistData();
+            appState.cart = [];
+            appState.appliedVoucher = null;
+            appState.checkoutStep = 1;
+            updateCartBadge();
+            closeCartDrawer();
+            showToast(`Đặt hàng thành công! Mã đơn: ${newOrder.orderId}`);
+            renderStaffOrders();
+        }
+
+        // Warranty Lookup
+        function searchWarrantyByIMEI() {
+            const imei = document.getElementById('imei-search-input').value.trim();
+            const resultBox = document.getElementById('warranty-result');
+            if (imei.length !== 15) { showToast("Vui lòng nhập đúng 15 chữ số IMEI!", false); return; }
+            const record = appState.imeiWarehouse.find(x => x.imei === imei);
+            resultBox.classList.remove('hidden');
+            if (!record || record.status !== 'ASSIGNED') {
+                resultBox.innerHTML = `<div class="text-center py-6 text-red-600"><p class="font-bold">Không tìm thấy thông tin bảo hành cho mã IMEI này.</p></div>`;
+                return;
+            }
+            resultBox.innerHTML = `<div class="border-l-4 border-green-500 pl-4 space-y-1 text-xs"><h3 class="font-bold text-base">${record.productName}</h3><p><b>Chủ sở hữu:</b> ${record.customer}</p><p><b>Hạn bảo hành:</b> ${record.expireDate}</p></div>`;
+        }
+
+        function quickFillIMEI(imei) {
+            document.getElementById('imei-search-input').value = imei;
+            searchWarrantyByIMEI();
+        }
+
+        // Staff portal
+        function renderStaffOrders() {
+            const tbody = document.getElementById('staff-orders-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = appState.orders.map(o => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-mono font-bold text-blue-600">${o.orderId}</td>
+                    <td class="p-3">${o.customerName}</td>
+                    <td class="p-3">${o.items.map(i => i.name).join(', ')}</td>
+                    <td class="p-3 font-bold">${formatVND(o.total)}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">${o.status}</span></td>
+                    <td class="p-3 font-mono text-xs">${o.assignedIMEI || '<span class="text-red-500">Chưa gán</span>'}</td>
+                    <td class="p-3 text-right">
+                        ${['PENDING','CONFIRMED','SHIPPING'].includes(o.status) ? `<button onclick="completeStaffOrder('${o.orderId}')" class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold">Duyệt & Gán IMEI</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function completeStaffOrder(orderId) {
+            const order = appState.orders.find(o => o.orderId === orderId);
+            const availableIMEI = appState.imeiWarehouse.find(w => w.status === 'AVAILABLE');
+            if (!availableIMEI) { showToast("Kho hết mã IMEI trống!", false); return; }
+            order.assignedIMEI = availableIMEI.imei;
+            order.status = 'DELIVERED';
+            availableIMEI.status = 'ASSIGNED';
+            availableIMEI.customer = order.customerName;
+            availableIMEI.phone = order.phone;
+            persistData();
+            showToast(`Đã gán IMEI ${availableIMEI.imei} và hoàn tất đơn!`);
+            renderStaffOrders();
+        }
+
+        // Admin
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.className = "admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700");
+            document.getElementById(`admin-tab-${tabName}`).className = "admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white";
+            if (tabName === 'products') renderAdminProducts();
+            else if (tabName === 'analytics') renderAdminAnalytics();
+            else document.getElementById('admin-content-area').innerHTML = `<div class="bg-white p-6 rounded-3xl text-sm">Tính năng quản lý đang hoạt động ổn định.</div>`;
+        }
+
+        function renderAdminProducts() {
+            document.getElementById('admin-content-area').innerHTML = `
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-base">Quản Lý Sản Phẩm Hệ Thống</h3>
+                    <div class="space-y-2">
+                        ${appState.products.map(p => `<div class="p-3 bg-slate-50 rounded-xl flex justify-between text-xs"><span><b>${p.name}</b> (${p.brandName})</span><span class="text-blue-600 font-bold">${formatVND(p.variants[0].price)}</span></div>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminAnalytics() {
+            const rev = appState.orders.filter(o => o.status === 'DELIVERED').reduce((s, o) => s + o.total, 0);
+            document.getElementById('admin-content-area').innerHTML = `
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-base">Báo Cáo Doanh Thu</h3>
+                    <div class="text-xl font-black text-blue-600">Tổng doanh thu: ${formatVND(rev)}</div>
+                </div>
+            `;
+        }
+
+        let isRegisterMode = false;
+        function openAuthModal() { openModal('modal-auth'); }
+        function toggleAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('auth-title').innerText = isRegisterMode ? "Đăng Ký Tài Khoản" : "Đăng Nhập Tài Khoản";
+            document.getElementById('auth-extra-fields').classList.toggle('hidden', !isRegisterMode);
+        }
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            closeModal('modal-auth');
+            showToast("Xác thực tài khoản thành công!");
+        }
+    </script>
+<script>
+/* ===== BỔ SUNG: mật khẩu, quản lý đơn, nhật ký TXT, voucher tự nhập, giỏ hàng chi tiết ===== */
+// Tài khoản đăng nhập Admin / Nhân viên (sửa mật khẩu ngay tại đây)
+const ACCOUNTS = { admin: { user: "admin", pass: "admin123" }, staff: { user: "nhanvien", pass: "nv123" } };
+const STATUS = {
+    PENDING: ["Chờ xử lý", "bg-amber-100 text-amber-800"], CONFIRMED: ["Đã xác nhận", "bg-blue-100 text-blue-800"],
+    SHIPPING: ["Đang giao", "bg-purple-100 text-purple-800"], DELIVERED: ["Đã giao", "bg-green-100 text-green-800"],
+    CANCELLED: ["Đã hủy", "bg-red-100 text-red-800"]
+};
+const PAY = { COD: "Thanh toán khi nhận hàng", BANK: "Chuyển khoản" };
+const stBadge = s => `<span class="px-2 py-0.5 rounded text-[10px] font-bold ${(STATUS[s] || STATUS.PENDING)[1]}">${(STATUS[s] || [s])[0]}</span>`;
+const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const ts = () => new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().replace('T', ' ').substring(0, 16);
+appState.auth = {}; appState.customer = null; appState.logs = getStorage("LOGS", []);
+var ordFilter = { q: '', st: 'ALL' };
+let logHandle = null, pendingRole = null;
+
+function findVariant(sku) { for (const p of appState.products) { const v = p.variants.find(x => x.sku === sku); if (v) return v; } return null; }
+function pushHistory(o, st) { (o.history = o.history || []).push({ time: ts(), status: st, by: { admin: 'Admin', staff: 'Nhân viên' }[appState.currentRole] || 'Khách hàng' }); }
+
+/* ---------- CHỨC NĂNG 3: nhật ký đăng nhập + đơn hàng -> file TXT ---------- */
+function orderLogText(o) {
+    return `ĐƠN ${o.orderId} | ${o.createdAt} | ${o.customerName} - ${o.phone} - ${o.address} | ` +
+        o.items.map(i => `${i.name} (${i.color}, ${i.storage}) x${i.qty}`).join('; ') +
+        ` | Tạm tính ${o.subtotal || o.total} | Giảm ${o.discount || 0}${o.voucher ? ' (' + o.voucher + ')' : ''} | TỔNG ${o.total} VND | ${PAY[o.payment] || '-'} | ${(STATUS[o.status] || [o.status])[0]}`;
+}
+function getLogText() {
+    return "===== PHONESTORE - DỮ LIỆU XUẤT LÚC " + new Date().toLocaleString('vi-VN') + " =====\n\n--- DANH SÁCH ĐƠN HÀNG ---\n" +
+        appState.orders.map(orderLogText).join("\n") + "\n\n--- NHẬT KÝ ĐĂNG NHẬP & HOẠT ĐỘNG ---\n" + appState.logs.join("\n") + "\n";
+}
+async function writeLogFile() {
+    if (!logHandle) return;
+    try { const w = await logHandle.createWritable(); await w.write(getLogText()); await w.close(); } catch (e) { logHandle = null; }
+}
+function addLog(type, text) {
+    appState.logs.push(`[${new Date().toLocaleString('vi-VN')}] [${type}] ${text}`);
+    setStorage("LOGS", appState.logs); writeLogFile();
+}
+function downloadLog() {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(["\ufeff" + getLogText()], { type: "text/plain;charset=utf-8" }));
+    a.download = "nhat-ky-phonestore.txt"; a.click();
+}
+async function linkLogFile() {
+    if (!window.showSaveFilePicker) { showToast("Trình duyệt không hỗ trợ ghi tự động. Hãy dùng Chrome/Edge hoặc nút Tải file", false); return; }
+    try {
+        logHandle = await showSaveFilePicker({ suggestedName: "nhat-ky-phonestore.txt", types: [{ accept: { "text/plain": [".txt"] } }] });
+        await writeLogFile(); showToast("Đã liên kết file TXT, hệ thống sẽ tự ghi"); renderAdminLogs();
+    } catch (e) { }
+}
+function clearLogs() { if (confirm("Xóa toàn bộ nhật ký hoạt động?")) { appState.logs = []; setStorage("LOGS", []); writeLogFile(); renderAdminLogs(); } }
+function renderAdminLogs() {
+    document.getElementById('admin-content-area').innerHTML = `
+    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 space-y-4">
+        <h3 class="font-bold text-base">Nhật Ký Đăng Nhập & Đơn Hàng (file TXT)</h3>
+        <div class="flex flex-wrap gap-2 text-xs">
+            <button onclick="downloadLog()" class="bg-blue-600 text-white font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-download"></i> Tải file .txt</button>
+            <button onclick="linkLogFile()" class="bg-green-600 text-white font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-link"></i> Liên kết file để tự động ghi</button>
+            <button onclick="clearLogs()" class="bg-red-50 text-red-700 font-bold px-4 py-2.5 rounded-xl">Xóa nhật ký</button>
+        </div>
+        <p class="text-[11px] text-slate-500">${logHandle ? '✅ Đang tự động ghi vào file đã liên kết.' : 'Trình duyệt không cho tự ghi file ngầm: hãy bấm "Liên kết file" 1 lần (Chrome/Edge) để mỗi lần đăng nhập/đặt hàng tự cập nhật file, hoặc tải file thủ công.'}</p>
+        <pre class="bg-slate-900 text-green-300 text-[11px] rounded-2xl p-4 max-h-96 overflow-auto custom-scrollbar whitespace-pre-wrap">${esc(getLogText()) || ''}</pre>
+    </div>`;
+}
+
+/* ---------- CHỨC NĂNG 1: mật khẩu Admin / Nhân viên ---------- */
+const _switchRole = switchRole;
+switchRole = function (role) {
+    if (role === 'staff' || role === 'admin') {
+        if (appState.auth[role] || (role === 'staff' && appState.auth.admin)) return _switchRole(role);
+        pendingRole = role;
+        document.getElementById('role-login-title').innerText = role === 'admin' ? 'Đăng nhập Quản lý (Admin)' : 'Đăng nhập Nhân viên';
+        document.getElementById('role-login-user').value = ''; document.getElementById('role-login-pass').value = '';
+        document.getElementById('role-login-err').classList.add('hidden');
+        openModal('modal-role-login'); return;
+    }
+    if (appState.auth.admin || appState.auth.staff) addLog('ĐĂNG XUẤT', `Rời vai trò ${appState.auth.admin ? 'ADMIN' : 'NHÂN VIÊN'}`);
+    appState.auth = {}; _switchRole(role);
+};
+function submitRoleLogin(e) {
+    e.preventDefault();
+    const u = document.getElementById('role-login-user').value.trim(), p = document.getElementById('role-login-pass').value, acc = ACCOUNTS[pendingRole];
+    if (u === acc.user && p === acc.pass) {
+        appState.auth[pendingRole] = true; addLog('ĐĂNG NHẬP', `${pendingRole.toUpperCase()} - tài khoản "${u}" - THÀNH CÔNG`);
+        closeModal('modal-role-login'); _switchRole(pendingRole);
+    } else {
+        addLog('ĐĂNG NHẬP', `${pendingRole.toUpperCase()} - tài khoản "${u}" - THẤT BẠI (sai thông tin)`);
+        document.getElementById('role-login-err').classList.remove('hidden');
+    }
+}
+const _handleAuthSubmit = handleAuthSubmit;
+handleAuthSubmit = function (e) {
+    const em = document.getElementById('auth-email').value;
+    addLog(isRegisterMode ? 'ĐĂNG KÝ' : 'ĐĂNG NHẬP', `Khách hàng ${em}`); _handleAuthSubmit(e);
+};
+
+/* ---------- CHỨC NĂNG 5: giỏ hàng hiển thị đầy đủ thông tin sản phẩm ---------- */
+function cartSubtotal() { return appState.cart.reduce((s, i) => s + i.price * i.qty, 0); }
+function calcDiscount(sub, v) {
+    if (!v || sub < v.minOrder) return 0;
+    let d = v.type === 'FIXED' ? v.value : sub * v.value / 100;
+    if (v.maxDiscount > 0) d = Math.min(d, v.maxDiscount);
+    return Math.round(Math.min(d, sub));
+}
+function cartItemHTML(it, editable) {
+    const p = appState.products.find(x => x.id === it.productId) || {}, g = k => (p.specs && p.specs[k]) || '-', v = findVariant(it.sku) || { stock: '-' };
+    return `<div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs space-y-2">
+        <div class="flex gap-3"><img src="${it.image}" class="w-20 h-20 object-cover rounded-xl">
+            <div class="flex-1 space-y-0.5"><div class="text-[10px] font-bold text-blue-600 uppercase">${p.brandName || ''}</div>
+                <h4 class="font-bold text-slate-900 text-sm">${it.name}</h4>
+                <div class="text-slate-500">Màu: <b>${it.color}</b> • Bộ nhớ: <b>${it.storage}</b></div>
+                <div class="text-slate-400 font-mono text-[10px]">SKU: ${it.sku}</div>
+                <div class="text-slate-500">Đơn giá: <b class="text-blue-600">${formatVND(it.price)}</b></div></div></div>
+        <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[11px] text-slate-600 bg-white rounded-xl p-2 border border-slate-100">
+            <span>Chip: <b>${g('chip')}</b></span><span>RAM: <b>${g('ram')}</b></span><span>Pin: <b>${g('battery')}</b></span>
+            <span>Bảo hành: <b>${p.warrantyMonths || '-'} tháng</b></span>
+            <span class="col-span-2">Camera: <b>${g('camera')}</b></span><span class="col-span-2">Màn hình: <b>${g('screen')}</b></span>
+            <span>Tồn kho: <b>${v.stock}</b></span></div>
+        <div class="flex justify-between items-center">
+            ${editable ? `<div class="flex items-center gap-2 bg-white rounded-lg border p-1"><button onclick="updateQty('${it.sku}', -1)" class="px-2 font-bold">-</button><span class="font-bold">${it.qty}</span><button onclick="updateQty('${it.sku}', 1)" class="px-2 font-bold">+</button></div>` : `<span>Số lượng: <b>x${it.qty}</b></span>`}
+            <span class="font-black text-blue-600 text-sm">${formatVND(it.price * it.qty)}</span></div></div>`;
+}
+function renderCartContent() {
+    const c = document.getElementById('cart-drawer-content'), f = document.getElementById('cart-drawer-footer'), step = appState.checkoutStep;
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step-lbl-${i}`).className = i === step ? "text-blue-600 font-black underline" : i < step ? "text-green-600 font-semibold" : "text-slate-400";
+    }
+    if (!appState.cart.length) { c.innerHTML = `<div class="py-16 text-center text-slate-400"><i class="fa-solid fa-cart-shopping text-4xl mb-2"></i><p>Giỏ hàng trống</p></div>`; f.innerHTML = ''; return; }
+    const sub = cartSubtotal(), v = appState.appliedVoucher, disc = calcDiscount(sub, v), total = Math.max(0, sub - disc);
+    const sums = `<div class="text-sm space-y-1"><div class="flex justify-between"><span class="text-slate-500">Tạm tính:</span><b>${formatVND(sub)}</b></div>
+        ${v ? `<div class="flex justify-between text-green-700"><span>Mã ${v.code}:</span><b>-${formatVND(disc)}</b></div>${disc === 0 ? `<div class="text-[11px] text-red-600">Chưa đạt đơn tối thiểu ${formatVND(v.minOrder)} của mã này</div>` : ''}` : ''}
+        <div class="flex justify-between text-blue-600 font-black text-base"><span>Tổng thanh toán:</span><span>${formatVND(total)}</span></div></div>`;
+    const nav = (back, next, label) => `<div class="flex gap-2"><button onclick="setCheckoutStep(${back})" class="w-1/3 bg-slate-200 font-bold py-3 rounded-xl text-xs">Quay Lại</button><button onclick="${next}" class="w-2/3 bg-blue-600 text-white font-bold py-3 rounded-xl text-xs shadow-md">${label}</button></div>`;
+    if (step === 1) {
+        c.innerHTML = appState.cart.map(i => cartItemHTML(i, true)).join('');
+        f.innerHTML = sums + `<button onclick="setCheckoutStep(2)" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md text-xs">Tiếp Tục Nhập Thông Tin</button>`;
+    } else if (step === 2) {
+        const k = appState.customer || {}, inp = "w-full border rounded-xl p-2.5 mt-1";
+        c.innerHTML = `<div class="space-y-3 text-xs"><h4 class="font-bold text-sm text-slate-900">Thông Tin Giao Hàng:</h4>
+            <div><label class="font-semibold">Họ tên:</label><input id="cust-name" value="${esc(k.name)}" placeholder="Nguyễn Văn A" class="${inp}"></div>
+            <div><label class="font-semibold">Số điện thoại:</label><input id="cust-phone" type="tel" value="${esc(k.phone)}" placeholder="0905123456" class="${inp}"></div>
+            <div><label class="font-semibold">Địa chỉ:</label><textarea id="cust-address" class="${inp}">${esc(k.address)}</textarea></div>
+            <div><label class="font-semibold">Hình thức thanh toán:</label><select id="cust-pay" class="${inp}"><option value="COD" ${k.payment !== 'BANK' ? 'selected' : ''}>${PAY.COD}</option><option value="BANK" ${k.payment === 'BANK' ? 'selected' : ''}>${PAY.BANK}</option></select></div>
+            <div><label class="font-semibold">Ghi chú:</label><textarea id="cust-note" class="${inp}">${esc(k.note)}</textarea></div></div>`;
+        f.innerHTML = nav(1, 'setCheckoutStep(3)', 'Tiếp Tục (Khuyến mãi)');
+    } else if (step === 3) {
+        c.innerHTML = `<div class="space-y-3 text-xs"><h4 class="font-bold text-sm">Mã Khuyến Mãi:</h4>
+            <div class="flex gap-2"><input id="voucher-code-input" value="${v ? v.code : ''}" placeholder="Nhập mã..." class="flex-1 border rounded-xl p-2.5 font-mono uppercase">
+            <button onclick="applyVoucherCode()" class="bg-slate-800 text-white px-4 rounded-xl font-bold">Áp dụng</button></div>
+            ${v && disc > 0 ? `<div class="bg-green-50 p-2.5 rounded-xl text-green-800 font-bold">✓ Đã áp dụng mã ${v.code}: -${formatVND(disc)}</div>` : ''}</div>
+            <div class="space-y-2 pt-2">${appState.cart.map(i => cartItemHTML(i, false)).join('')}</div>`;
+        f.innerHTML = sums + nav(2, 'setCheckoutStep(4)', 'Xác Nhận');
+    } else {
+        const k = appState.customer || {};
+        c.innerHTML = `<div class="space-y-3 text-xs"><div class="bg-blue-50 border border-blue-100 rounded-2xl p-3 space-y-1"><b class="text-sm">Thông tin nhận hàng</b>
+            <div>Người nhận: <b>${esc(k.name)}</b> - ${esc(k.phone)}</div><div>Địa chỉ: ${esc(k.address)}</div><div>Thanh toán: ${PAY[k.payment] || PAY.COD}</div>${k.note ? `<div>Ghi chú: ${esc(k.note)}</div>` : ''}</div>
+            ${appState.cart.map(i => cartItemHTML(i, false)).join('')}</div>`;
+        f.innerHTML = sums + `<button onclick="submitOrderFinal()" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl text-xs shadow-md">Đặt Hàng Ngay</button>`;
+    }
+}
+function saveCustomer() {
+    const g = id => document.getElementById(id);
+    if (g('cust-name')) appState.customer = { name: g('cust-name').value.trim(), phone: g('cust-phone').value.trim(), address: g('cust-address').value.trim(), payment: g('cust-pay').value, note: g('cust-note').value.trim() };
+}
+setCheckoutStep = function (step) {
+    if (appState.checkoutStep === 2) {
+        saveCustomer(); const c = appState.customer;
+        if (step > 2 && (!c.name || !/^0\d{9,10}$/.test(c.phone) || !c.address)) { showToast("Vui lòng nhập đủ họ tên, SĐT hợp lệ (10-11 số) và địa chỉ!", false); return; }
+    }
+    appState.checkoutStep = step; renderCartContent();
+};
+// Giới hạn số lượng theo tồn kho
+const _addToCart = addToCart;
+addToCart = function (pid, sku) {
+    const v = findVariant(sku), c = appState.cart.find(x => x.sku === sku);
+    if (!v || v.stock <= 0) { showToast("Sản phẩm đã hết hàng!", false); return; }
+    if (c && c.qty >= v.stock) { showToast(`Chỉ còn ${v.stock} máy trong kho!`, false); return; }
+    _addToCart(pid, sku);
+};
+const _updateQty = updateQty;
+updateQty = function (sku, d) {
+    const it = appState.cart.find(c => c.sku === sku), v = findVariant(sku);
+    if (it && d > 0 && v && it.qty >= v.stock) { showToast(`Chỉ còn ${v.stock} máy trong kho!`, false); return; }
+    _updateQty(sku, d);
+};
+
+/* ---------- CHỨC NĂNG 4: mã khuyến mãi do admin tự nhập mức giảm ---------- */
+applyVoucherCode = function () {
+    const code = document.getElementById('voucher-code-input').value.trim().toUpperCase();
+    const v = appState.vouchers.find(x => x.code === code && x.active);
+    if (!v || v.usageLeft <= 0) { showToast("Mã không hợp lệ hoặc đã hết lượt dùng!", false); return; }
+    if (cartSubtotal() < v.minOrder) { showToast(`Đơn tối thiểu ${formatVND(v.minOrder)} để dùng mã này`, false); return; }
+    appState.appliedVoucher = v; showToast("Áp dụng mã giảm giá thành công!"); renderCartContent();
+};
+function voucherDesc(v) { return (v.type === 'FIXED' ? `Giảm ${formatVND(v.value)}` : `Giảm ${v.value}%${v.maxDiscount > 0 ? ' (tối đa ' + formatVND(v.maxDiscount) + ')' : ''}`) + ` • Đơn từ ${formatVND(v.minOrder)}`; }
+function renderAdminVouchers() {
+    const inp = "w-full border border-slate-300 rounded-xl p-2.5 text-xs mt-1";
+    document.getElementById('admin-content-area').innerHTML = `<div class="space-y-4">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 space-y-3"><h3 class="font-bold text-base">Tạo Mã Khuyến Mãi Mới</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-semibold text-slate-600">
+                <div>Mã (chữ/số, không dấu)<input id="vc-code" placeholder="VD: SALE500" class="${inp} uppercase font-mono"></div>
+                <div>Loại giảm giá<select id="vc-type" onchange="document.getElementById('vc-max-wrap').classList.toggle('hidden', this.value==='FIXED');document.getElementById('vc-val-lbl').innerText=this.value==='FIXED'?'Số tiền giảm (VNĐ)':'Phần trăm giảm (%)'" class="${inp}"><option value="FIXED">Giảm số tiền cố định</option><option value="PERCENT">Giảm theo phần trăm</option></select></div>
+                <div><span id="vc-val-lbl">Số tiền giảm (VNĐ)</span><input id="vc-value" type="number" min="1" placeholder="Nhập mức giảm" class="${inp}"></div>
+                <div>Đơn tối thiểu (VNĐ)<input id="vc-min" type="number" min="0" value="0" class="${inp}"></div>
+                <div id="vc-max-wrap" class="hidden">Giảm tối đa (VNĐ)<input id="vc-max" type="number" min="0" placeholder="0 = không giới hạn" class="${inp}"></div>
+                <div>Số lượt sử dụng<input id="vc-uses" type="number" min="1" value="50" class="${inp}"></div></div>
+            <button onclick="createVoucher()" class="bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs">Tạo mã</button></div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 space-y-2"><h3 class="font-bold text-base">Danh Sách Mã</h3>
+            ${appState.vouchers.map((v, i) => `<div class="p-3 bg-slate-50 rounded-xl flex flex-wrap justify-between items-center gap-2 text-xs">
+                <div><b class="font-mono text-blue-700">${v.code}</b> ${v.active ? '' : '<span class="text-red-600 font-bold">(đã tắt)</span>'}<div class="text-slate-500">${voucherDesc(v)} • Còn ${v.usageLeft} lượt</div></div>
+                <div class="flex gap-2"><button onclick="toggleVoucher(${i})" class="bg-slate-200 px-3 py-1.5 rounded-lg font-bold">${v.active ? 'Tắt' : 'Bật'}</button><button onclick="deleteVoucher(${i})" class="bg-red-50 text-red-700 px-3 py-1.5 rounded-lg font-bold">Xóa</button></div></div>`).join('') || '<div class="text-slate-400 text-xs">Chưa có mã nào</div>'}</div></div>`;
+}
+function createVoucher() {
+    const g = id => document.getElementById(id).value, code = g('vc-code').trim().toUpperCase(), type = g('vc-type'), value = +g('vc-value');
+    if (!/^[A-Z0-9]{3,20}$/.test(code)) { showToast("Mã gồm 3-20 ký tự chữ/số, không dấu!", false); return; }
+    if (appState.vouchers.some(v => v.code === code)) { showToast("Mã này đã tồn tại!", false); return; }
+    if (!(value > 0) || (type === 'PERCENT' && value > 100)) { showToast("Mức giảm không hợp lệ (phần trăm tối đa 100)!", false); return; }
+    const v = { code, type, value, minOrder: +g('vc-min') || 0, maxDiscount: type === 'FIXED' ? value : (+g('vc-max') || 0), usageLeft: Math.max(1, +g('vc-uses') || 1), active: true };
+    appState.vouchers.push(v); persistData(); addLog('VOUCHER', `Tạo mã ${code}: ${voucherDesc(v)}, ${v.usageLeft} lượt`);
+    showToast(`Đã tạo mã ${code}`); renderAdminVouchers();
+}
+function toggleVoucher(i) { appState.vouchers[i].active = !appState.vouchers[i].active; persistData(); renderAdminVouchers(); }
+function deleteVoucher(i) { if (confirm("Xóa mã này?")) { addLog('VOUCHER', `Xóa mã ${appState.vouchers[i].code}`); appState.vouchers.splice(i, 1); persistData(); renderAdminVouchers(); } }
+
+/* ---------- Đặt hàng: tính giảm giá, trừ kho, lưu nhật ký ---------- */
+submitOrderFinal = function () {
+    const c = appState.customer; if (!c) { setCheckoutStep(2); return; }
+    for (const it of appState.cart) { const v = findVariant(it.sku); if (!v || v.stock < it.qty) { showToast(`${it.name} không đủ tồn kho!`, false); return; } }
+    const sub = cartSubtotal(), v = appState.appliedVoucher, disc = calcDiscount(sub, v);
+    const o = {
+        orderId: "ORD-" + Date.now().toString().slice(-6), customerName: c.name, phone: c.phone, address: c.address, payment: c.payment, note: c.note,
+        items: appState.cart.map(i => ({ ...i })), subtotal: sub, discount: disc, voucher: disc > 0 ? v.code : null, total: sub - disc,
+        status: "PENDING", assignedIMEI: null, createdAt: ts()
+    };
+    pushHistory(o, "PENDING");
+    appState.cart.forEach(i => { findVariant(i.sku).stock -= i.qty; });
+    if (disc > 0) v.usageLeft--;
+    appState.orders.unshift(o); persistData(); addLog('ĐƠN HÀNG', orderLogText(o));
+    appState.cart = []; appState.appliedVoucher = null; appState.checkoutStep = 1;
+    updateCartBadge(); closeCartDrawer(); renderStaffOrders(); renderProductGrid(appState.products);
+    showToast(`Đặt hàng thành công! Mã đơn: ${o.orderId}`);
+};
+
+/* ---------- CHỨC NĂNG 2: quản lý đơn hàng chi tiết ---------- */
+function renderStaffOrders() {
+    const tb = document.getElementById('staff-orders-tbody'); if (!tb) return;
+    document.getElementById('staff-pending-count').innerText = appState.orders.filter(o => o.status === 'PENDING').length;
+    tb.innerHTML = appState.orders.map(o => `<tr class="hover:bg-slate-50"><td class="p-3 font-mono font-bold text-blue-600">${o.orderId}</td><td class="p-3">${esc(o.customerName)}<div class="text-[10px] text-slate-400">${esc(o.phone)}</div></td>
+        <td class="p-3">${o.items.map(i => `${i.name} x${i.qty}`).join(', ')}</td><td class="p-3 font-bold">${formatVND(o.total)}</td><td class="p-3">${stBadge(o.status)}</td>
+        <td class="p-3 font-mono text-xs">${o.assignedIMEI || '<span class="text-red-500">Chưa gán</span>'}</td>
+        <td class="p-3 text-right space-x-1"><button onclick="showOrderDetail('${o.orderId}')" class="bg-slate-200 px-2.5 py-1 rounded text-xs font-bold">Chi tiết</button>
+        ${o.status === 'PENDING' ? `<button onclick="completeStaffOrder('${o.orderId}')" class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold">Duyệt & Gán IMEI</button>` : ''}</td></tr>`).join('');
+}
+const _completeStaffOrder = completeStaffOrder;
+completeStaffOrder = function (id) {
+    const o = appState.orders.find(x => x.orderId === id), before = o.status;
+    _completeStaffOrder(id);
+    if (o.status !== before) { pushHistory(o, o.status); persistData(); addLog('ĐƠN HÀNG', `${id} hoàn tất, gán IMEI ${o.assignedIMEI}`); }
+    if (document.getElementById('ord-body')) renderAdminOrders();
+};
+function renderAdminOrders() {
+    const all = appState.orders, cnt = s => all.filter(o => o.status === s).length, rev = all.filter(o => o.status === 'DELIVERED').reduce((s, o) => s + o.total, 0);
+    document.getElementById('admin-content-area').innerHTML = `<div class="space-y-4">
+        <div class="grid grid-cols-2 md:grid-cols-6 gap-3">${Object.keys(STATUS).map(s => `<div class="bg-white border border-slate-200 rounded-2xl p-3 text-center"><div class="text-2xl font-black">${cnt(s)}</div>${stBadge(s)}</div>`).join('')}
+            <div class="bg-blue-600 text-white rounded-2xl p-3 text-center"><div class="text-sm font-black">${formatVND(rev)}</div><div class="text-[10px] uppercase font-bold">Doanh thu đã giao</div></div></div>
+        <div class="bg-white rounded-3xl border border-slate-200 p-4 space-y-3">
+            <div class="flex flex-col sm:flex-row gap-2"><input value="${esc(ordFilter.q)}" oninput="ordFilter.q=this.value.toLowerCase().trim();renderOrderRows()" placeholder="Tìm mã đơn, tên khách, SĐT..." class="flex-1 border border-slate-300 rounded-xl p-2.5 text-xs">
+            <select onchange="ordFilter.st=this.value;renderOrderRows()" class="border border-slate-300 rounded-xl p-2.5 text-xs"><option value="ALL">Tất cả trạng thái</option>${Object.keys(STATUS).map(s => `<option value="${s}" ${ordFilter.st === s ? 'selected' : ''}>${STATUS[s][0]}</option>`).join('')}</select></div>
+            <div class="overflow-x-auto"><table class="w-full text-left text-xs text-slate-600"><thead class="bg-slate-100 uppercase text-[10px] font-bold"><tr><th class="p-2">Mã đơn</th><th class="p-2">Ngày đặt</th><th class="p-2">Khách hàng</th><th class="p-2">Sản phẩm</th><th class="p-2">Thanh toán</th><th class="p-2">Tổng tiền</th><th class="p-2">Trạng thái</th><th class="p-2"></th></tr></thead><tbody id="ord-body" class="divide-y divide-slate-100"></tbody></table></div></div></div>`;
+    renderOrderRows();
+}
+function renderOrderRows() {
+    const b = document.getElementById('ord-body'); if (!b) return;
+    const l = appState.orders.filter(o => (ordFilter.st === 'ALL' || o.status === ordFilter.st) && (!ordFilter.q || (o.orderId + o.customerName + o.phone).toLowerCase().includes(ordFilter.q)));
+    b.innerHTML = l.length ? l.map(o => `<tr class="hover:bg-slate-50"><td class="p-2 font-mono font-bold text-blue-600">${o.orderId}</td><td class="p-2">${o.createdAt}</td><td class="p-2"><b>${esc(o.customerName)}</b><div class="text-[10px]">${esc(o.phone)}</div></td>
+        <td class="p-2">${o.items.map(i => `${i.name} x${i.qty}`).join('<br>')}</td><td class="p-2">${PAY[o.payment] || '—'}</td><td class="p-2 font-bold">${formatVND(o.total)}</td><td class="p-2">${stBadge(o.status)}</td>
+        <td class="p-2 text-right"><button onclick="showOrderDetail('${o.orderId}')" class="bg-slate-800 text-white px-2.5 py-1 rounded-lg font-bold">Chi tiết</button></td></tr>`).join('')
+        : `<tr><td colspan="8" class="p-6 text-center text-slate-400">Không có đơn hàng phù hợp</td></tr>`;
+}
+function showOrderDetail(id) {
+    const o = appState.orders.find(x => x.orderId === id); if (!o) return;
+    const sub = o.subtotal || o.total, locked = ['DELIVERED', 'CANCELLED'].includes(o.status), canEdit = appState.currentRole === 'admin' || appState.currentRole === 'staff';
+    document.getElementById('order-detail-content').innerHTML = `<div class="space-y-4 text-xs">
+        <div class="flex items-center gap-3"><h3 class="text-lg font-black font-mono text-blue-600">${o.orderId}</h3>${stBadge(o.status)}</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-50 rounded-2xl p-3 border border-slate-200">
+            <div>Khách hàng: <b>${esc(o.customerName)}</b></div><div>SĐT: <b>${esc(o.phone)}</b></div><div class="sm:col-span-2">Địa chỉ: <b>${esc(o.address)}</b></div>
+            <div>Ngày đặt: <b>${o.createdAt}</b></div><div>Thanh toán: <b>${PAY[o.payment] || '—'}</b></div>
+            <div>Mã IMEI: <b class="font-mono">${o.assignedIMEI || 'Chưa gán'}</b></div>${o.note ? `<div class="sm:col-span-2">Ghi chú: ${esc(o.note)}</div>` : ''}</div>
+        <table class="w-full"><thead class="bg-slate-100 text-[10px] uppercase"><tr><th class="p-2 text-left">Sản phẩm</th><th class="p-2">SL</th><th class="p-2 text-right">Đơn giá</th><th class="p-2 text-right">Thành tiền</th></tr></thead><tbody class="divide-y divide-slate-100">
+            ${o.items.map(i => `<tr><td class="p-2"><b>${i.name}</b><div class="text-[10px] text-slate-500">${i.color} • ${i.storage} • ${i.sku}</div></td><td class="p-2 text-center">${i.qty}</td><td class="p-2 text-right">${formatVND(i.price)}</td><td class="p-2 text-right font-bold">${formatVND(i.price * i.qty)}</td></tr>`).join('')}</tbody></table>
+        <div class="text-right space-y-0.5"><div>Tạm tính: <b>${formatVND(sub)}</b></div><div>Giảm giá${o.voucher ? ' (' + o.voucher + ')' : ''}: <b>-${formatVND(o.discount || 0)}</b></div><div class="text-base font-black text-blue-600">Tổng: ${formatVND(o.total)}</div></div>
+        ${canEdit ? (locked ? `<div class="text-slate-500 italic">Đơn đã kết thúc, không thể đổi trạng thái.</div>` : `<div class="flex gap-2 items-center"><select id="od-status" class="border border-slate-300 rounded-xl p-2.5">${Object.keys(STATUS).map(s => `<option value="${s}" ${o.status === s ? 'selected' : ''}>${STATUS[s][0]}</option>`).join('')}</select><button onclick="updateOrderStatus('${o.orderId}')" class="bg-blue-600 text-white font-bold px-4 py-2.5 rounded-xl">Cập nhật trạng thái</button></div>`) : ''}
+        <div><b>Lịch sử xử lý:</b><ul class="mt-1 space-y-1">${(o.history || [{ time: o.createdAt, status: o.status, by: 'Hệ thống' }]).map(h => `<li class="flex gap-2 items-center"><span class="font-mono text-slate-400">${h.time}</span>${stBadge(h.status)}<span class="text-slate-500">bởi ${h.by}</span></li>`).join('')}</ul></div></div>`;
+    openModal('modal-order-detail');
+}
+function updateOrderStatus(id) {
+    const o = appState.orders.find(x => x.orderId === id), ns = document.getElementById('od-status').value; if (ns === o.status) return;
+    if (ns === 'CANCELLED') { if (!confirm("Hủy đơn và hoàn lại tồn kho?")) return; o.items.forEach(i => { const v = findVariant(i.sku); if (v) v.stock += i.qty; }); }
+    o.status = ns; pushHistory(o, ns); persistData();
+    addLog('ĐƠN HÀNG', `${id} chuyển sang "${STATUS[ns][0]}" (${appState.currentRole})`);
+    showToast("Đã cập nhật trạng thái đơn"); showOrderDetail(id); renderStaffOrders(); if (document.getElementById('ord-body')) renderAdminOrders();
+}
+const _switchAdminTab = switchAdminTab;
+switchAdminTab = function (t) {
+    const map = { orders: renderAdminOrders, vouchers: renderAdminVouchers, logs: renderAdminLogs };
+    if (!map[t]) return _switchAdminTab(t);
+    document.querySelectorAll('.admin-tab-btn').forEach(b => b.className = "admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700");
+    document.getElementById('admin-tab-' + t).className = "admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white";
+    map[t]();
+};
+renderStaffOrders();
+</script>
+
+<script>
+/* ===== BỔ SUNG LẦN 2: đăng ký/đăng nhập bắt buộc, quản lý sản phẩm, giao diện bán điện thoại ===== */
+var customers = getStorage("CUSTOMERS", [{ email: "khachhang@phonestore.vn", pass: "123456", name: "Khách Hàng Demo", phone: "0905123456" }]);
+var gateReg = false, editingPid = null, formVariants = [], pfImg = '';
+appState.currentUser = null;
+const SEG = { BUDGET: "Giá rẻ", MID: "Tầm trung", PREMIUM: "Cao cấp" };
+const fv = id => { const e = document.getElementById(id); return e ? e.value.trim() : ''; };
+
+/* ---------- 1. Màn hình đăng nhập/đăng ký bắt buộc mỗi lần truy cập ---------- */
+document.body.insertAdjacentHTML('beforeend', `
+<div id="login-gate" class="fixed inset-0 z-[70] bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 flex items-center justify-center p-4 overflow-y-auto">
+  <div class="bg-white rounded-3xl max-w-md w-full p-7 space-y-4 shadow-2xl my-auto">
+    <div class="text-center space-y-1">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center text-white text-2xl shadow-lg"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      <h2 class="text-2xl font-black">PHONE<span class="text-blue-600">STORE</span></h2>
+      <p id="gate-sub" class="text-xs text-slate-500">Vui lòng đăng nhập để tiếp tục mua sắm</p>
+    </div>
+    <form onsubmit="gateSubmit(event)" class="space-y-3 text-xs font-semibold text-slate-600">
+      <div id="gate-reg" class="hidden space-y-3">
+        <div>Họ và tên<input id="gate-name" placeholder="Nguyễn Văn A" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 mt-1"></div>
+        <div>Số điện thoại<input id="gate-phone" type="tel" placeholder="0905123456" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 mt-1"></div>
+      </div>
+      <div>Email<input id="gate-email" placeholder="email@gmail.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 mt-1"></div>
+      <div>Mật khẩu<input id="gate-pass" type="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 mt-1"></div>
+      <div id="gate-reg2" class="hidden">Nhập lại mật khẩu<input id="gate-pass2" type="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 mt-1"></div>
+      <div id="gate-err" class="hidden text-red-600"></div>
+      <button id="gate-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow">Đăng Nhập</button>
+    </form>
+    <div class="text-center text-xs text-slate-500 border-t border-slate-100 pt-3"><span id="gate-toggle-msg">Chưa có tài khoản?</span>
+      <button onclick="toggleGate()" id="gate-toggle-btn" class="text-blue-600 font-bold hover:underline ml-1">Đăng ký ngay</button></div>
+    <div class="text-center text-[10px] text-slate-400">Tài khoản demo: khachhang@phonestore.vn / 123456</div>
+  </div>
+</div>
+<div id="user-menu" class="hidden fixed top-16 right-4 z-50 w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3 text-xs space-y-1"></div>
+<div id="modal-product-form" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl p-6 relative custom-scrollbar">
+    <button onclick="closeModal('modal-product-form')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 rounded-full w-8 h-8 font-bold">✕</button>
+    <div id="product-form-content"></div></div></div>`);
+
+function gateErr(m) { const e = document.getElementById('gate-err'); e.innerText = m; e.classList.remove('hidden'); }
+function toggleGate() {
+    gateReg = !gateReg;
+    ['gate-reg', 'gate-reg2'].forEach(id => document.getElementById(id).classList.toggle('hidden', !gateReg));
+    document.getElementById('gate-btn').innerText = gateReg ? 'Đăng Ký & Vào Cửa Hàng' : 'Đăng Nhập';
+    document.getElementById('gate-sub').innerText = gateReg ? 'Tạo tài khoản mới để mua sắm' : 'Vui lòng đăng nhập để tiếp tục mua sắm';
+    document.getElementById('gate-toggle-msg').innerText = gateReg ? 'Đã có tài khoản?' : 'Chưa có tài khoản?';
+    document.getElementById('gate-toggle-btn').innerText = gateReg ? 'Đăng nhập' : 'Đăng ký ngay';
+    document.getElementById('gate-err').classList.add('hidden');
+}
+function gateSubmit(e) {
+    e.preventDefault();
+    const email = fv('gate-email').toLowerCase(), pass = document.getElementById('gate-pass').value;
+    if (gateReg) {
+        const name = fv('gate-name'), phone = fv('gate-phone');
+        if (!name) return gateErr("Vui lòng nhập họ và tên!");
+        if (!/^0\d{9,10}$/.test(phone)) return gateErr("Số điện thoại không hợp lệ (10-11 số, bắt đầu bằng 0)!");
+        if (!/^\S+@\S+\.\S+$/.test(email)) return gateErr("Email không hợp lệ!");
+        if (pass.length < 6) return gateErr("Mật khẩu tối thiểu 6 ký tự!");
+        if (pass !== document.getElementById('gate-pass2').value) return gateErr("Mật khẩu nhập lại không khớp!");
+        if (customers.some(c => c.email === email)) return gateErr("Email này đã được đăng ký!");
+        const c = { email, pass, name, phone }; customers.push(c); setStorage("CUSTOMERS", customers);
+        addLog('ĐĂNG KÝ', `Khách hàng "${name}" <${email}> - SĐT ${phone}`); return enterAsCustomer(c);
+    }
+    const c = customers.find(x => x.email === email && x.pass === pass);
+    if (c) return enterAsCustomer(c);
+    for (const role of ['admin', 'staff']) {   // nhân viên / admin cũng có thể đăng nhập tại đây
+        if (ACCOUNTS[role].user === email && ACCOUNTS[role].pass === pass) {
+            appState.auth[role] = true; appState.currentUser = { email, name: role === 'admin' ? 'Quản lý' : 'Nhân viên' };
+            addLog('ĐĂNG NHẬP', `${role.toUpperCase()} - tài khoản "${email}" - THÀNH CÔNG`);
+            document.getElementById('login-gate').classList.add('hidden'); updateUserBtn(); _switchRole(role); return;
+        }
+    }
+    addLog('ĐĂNG NHẬP', `Tài khoản "${email}" - THẤT BẠI (sai thông tin)`); gateErr("Sai email hoặc mật khẩu!");
+}
+function enterAsCustomer(c) {
+    appState.currentUser = { email: c.email, name: c.name, phone: c.phone };
+    appState.customer = { name: c.name, phone: c.phone, address: '', payment: 'COD', note: '' };
+    if (!gateReg) addLog('ĐĂNG NHẬP', `Khách hàng "${c.name}" <${c.email}> - THÀNH CÔNG`);
+    document.getElementById('login-gate').classList.add('hidden'); updateUserBtn();
+    showToast(`Xin chào ${c.name}!`);
+}
+function updateUserBtn() {
+    const u = appState.currentUser, b = document.getElementById('btn-auth');
+    b.innerHTML = `<span class="flex items-center gap-1.5 text-sm font-semibold"><i class="fa-solid fa-circle-user text-2xl text-blue-600"></i><span class="hidden sm:inline max-w-[120px] truncate">${esc(u.name)}</span></span>`;
+    document.getElementById('user-menu').innerHTML = `<div class="px-2 py-1.5 border-b border-slate-100 mb-1"><div class="font-bold text-sm text-slate-900 truncate">${esc(u.name)}</div><div class="text-slate-500 truncate">${esc(u.email)}</div></div>
+        <button onclick="showMyOrders()" class="w-full text-left px-2 py-2 rounded-lg hover:bg-slate-100 font-semibold"><i class="fa-solid fa-box w-5"></i> Đơn hàng của tôi</button>
+        <button onclick="logout()" class="w-full text-left px-2 py-2 rounded-lg hover:bg-red-50 text-red-600 font-semibold"><i class="fa-solid fa-right-from-bracket w-5"></i> Đăng xuất</button>`;
+}
+openAuthModal = function () { document.getElementById('user-menu').classList.toggle('hidden'); };
+function logout() {
+    const u = appState.currentUser; if (!u) return;
+    addLog('ĐĂNG XUẤT', `"${u.name}" <${u.email}>`);
+    document.getElementById('user-menu').classList.add('hidden'); closeCartDrawer();
+    appState.auth = {}; appState.cart = []; appState.appliedVoucher = null; appState.customer = null; appState.currentUser = null; updateCartBadge();
+    _switchRole('customer');
+    ['gate-email', 'gate-pass', 'gate-pass2'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('gate-err').classList.add('hidden');
+    if (gateReg) toggleGate();
+    document.getElementById('login-gate').classList.remove('hidden');
+}
+function showMyOrders() {
+    document.getElementById('user-menu').classList.add('hidden');
+    const l = appState.orders.filter(o => o.userEmail === appState.currentUser.email);
+    document.getElementById('order-detail-content').innerHTML = `<h3 class="font-black text-lg mb-3">Đơn hàng của tôi</h3>` + (l.length ? l.map(o => `<div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl mb-2 text-xs"><div><b class="font-mono text-blue-600">${o.orderId}</b> ${stBadge(o.status)}<div class="text-slate-500 mt-0.5">${o.createdAt} • ${o.items.map(i => i.name + ' x' + i.qty).join(', ')}</div></div><div class="text-right"><b>${formatVND(o.total)}</b><br><button onclick="showOrderDetail('${o.orderId}')" class="text-blue-600 font-bold">Chi tiết</button></div></div>`).join('') : '<p class="text-xs text-slate-400">Bạn chưa có đơn hàng nào.</p>');
+    openModal('modal-order-detail');
+}
+const _submitOrderFinal = submitOrderFinal;
+submitOrderFinal = function () {
+    const n = appState.orders.length; _submitOrderFinal();
+    if (appState.orders.length > n && appState.currentUser) { appState.orders[0].userEmail = appState.currentUser.email; persistData(); }
+};
+
+/* ---------- 2. Quản lý sản phẩm đầy đủ + thêm/sửa/xóa sản phẩm ---------- */
+function renderAdminProducts() {
+    const P = appState.products, stockOf = p => p.variants.reduce((s, v) => s + v.stock, 0);
+    document.getElementById('admin-content-area').innerHTML = `<div class="space-y-4">
+      <div class="grid grid-cols-3 gap-3 text-center">
+        <div class="bg-white border border-slate-200 rounded-2xl p-3"><div class="text-2xl font-black">${P.length}</div><div class="text-[10px] uppercase font-bold text-slate-500">Sản phẩm</div></div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-3"><div class="text-2xl font-black">${P.reduce((s, p) => s + stockOf(p), 0)}</div><div class="text-[10px] uppercase font-bold text-slate-500">Tổng tồn kho</div></div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-3"><div class="text-2xl font-black text-red-600">${P.filter(p => stockOf(p) === 0).length}</div><div class="text-[10px] uppercase font-bold text-slate-500">Hết hàng</div></div></div>
+      <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200 space-y-3">
+        <div class="flex flex-col sm:flex-row justify-between gap-2"><h3 class="font-bold text-base">Quản Lý Sản Phẩm Hệ Thống</h3>
+          <button onclick="openProductForm()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs"><i class="fa-solid fa-plus"></i> Thêm sản phẩm mới</button></div>
+        <div class="overflow-x-auto"><table class="w-full text-left text-xs text-slate-600"><thead class="bg-slate-100 uppercase text-[10px] font-bold"><tr>
+          <th class="p-2">Ảnh</th><th class="p-2">Mã / Tên</th><th class="p-2">Hãng</th><th class="p-2">Phân khúc</th><th class="p-2">Cấu hình</th><th class="p-2">Phiên bản (màu • dung lượng • giá • kho)</th><th class="p-2">Bảo hành</th><th class="p-2">Mô tả</th><th class="p-2"></th></tr></thead>
+        <tbody class="divide-y divide-slate-100 align-top">${P.map(p => `<tr class="hover:bg-slate-50">
+          <td class="p-2"><img src="${p.image}" class="w-16 h-16 object-cover rounded-xl"></td>
+          <td class="p-2"><div class="font-mono text-[10px] text-slate-400">${p.id}</div><b class="text-slate-900">${esc(p.name)}</b>${p.oldPrice > 0 ? `<div class="text-[10px] text-slate-400 line-through">${formatVND(p.oldPrice)}</div>` : ''}</td>
+          <td class="p-2">${esc(p.brandName)}</td><td class="p-2">${SEG[p.segment] || p.segment}</td>
+          <td class="p-2 text-[11px] leading-relaxed min-w-[200px]">Chip: <b>${esc(p.specs.chip)}</b><br>RAM: <b>${esc(p.specs.ram)}</b> • Pin: <b>${esc(p.specs.battery)}</b><br>Camera: ${esc(p.specs.camera)}<br>Màn hình: ${esc(p.specs.screen)}</td>
+          <td class="p-2 min-w-[220px] space-y-1">${p.variants.map(v => `<div class="text-[11px]">${esc(v.color)} • ${esc(v.storage)} • <b class="text-blue-600">${formatVND(v.price)}</b> • <span class="${v.stock > 0 ? 'text-green-600' : 'text-red-600'} font-bold">${v.stock > 0 ? 'Kho ' + v.stock : 'Hết hàng'}</span><div class="font-mono text-[9px] text-slate-400">${v.sku}</div></div>`).join('')}</td>
+          <td class="p-2">${p.warrantyMonths} tháng</td><td class="p-2 max-w-[200px] text-[11px]"><div class="line-clamp-3">${esc(p.description)}</div></td>
+          <td class="p-2 text-right whitespace-nowrap"><button onclick="openProductForm('${p.id}')" class="bg-slate-800 text-white px-2.5 py-1 rounded-lg font-bold">Sửa</button> <button onclick="deleteProduct('${p.id}')" class="bg-red-50 text-red-700 px-2.5 py-1 rounded-lg font-bold">Xóa</button></td></tr>`).join('')}</tbody></table></div></div></div>`;
+}
+function openProductForm(pid) {
+    editingPid = pid || null; pfImg = '';
+    const p = pid ? appState.products.find(x => x.id === pid) : null, s = (p && p.specs) || {};
+    formVariants = p ? p.variants.map(v => ({ ...v })) : [{ sku: '', color: '', storage: '', price: 0, stock: 0 }];
+    const I = "w-full border border-slate-300 rounded-xl p-2.5 text-xs mt-1", L = "text-xs font-semibold text-slate-600";
+    const F = (id, label, val, ph, type) => `<div class="${L}">${label}<input id="${id}" type="${type || 'text'}" value="${esc(val)}" placeholder="${ph || ''}" class="${I}"></div>`;
+    const img = p ? p.image : '';
+    document.getElementById('product-form-content').innerHTML = `<div class="space-y-4">
+      <h3 class="text-lg font-black">${p ? 'Sửa sản phẩm: ' + esc(p.name) : 'Thêm sản phẩm mới'}</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        ${F('pf-name', 'Tên sản phẩm *', p ? p.name : '', 'VD: iPhone 18 Pro Max')}
+        <div class="${L}">Thương hiệu *<select id="pf-brand" class="${I}">${appState.brands.map(b => `<option value="${b.id}" ${p && p.brandId === b.id ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></div>
+        <div class="${L}">Phân khúc<select id="pf-seg" class="${I}">${Object.keys(SEG).map(k => `<option value="${k}" ${p && p.segment === k ? 'selected' : ''}>${SEG[k]}</option>`).join('')}</select></div>
+        ${F('pf-warranty', 'Bảo hành (tháng)', p ? p.warrantyMonths : 12, '', 'number')}
+        ${F('pf-chip', 'Chip xử lý', s.chip, 'Apple A20 Bionic')}${F('pf-ram', 'RAM', s.ram, '12GB')}
+        ${F('pf-battery', 'Pin', s.battery, '5000mAh')}${F('pf-camera', 'Camera', s.camera, '50MP')}
+        ${F('pf-screen', 'Màn hình', s.screen, '6.7 inch AMOLED 120Hz')}${F('pf-old', 'Giá gốc trước giảm (VNĐ, bỏ trống nếu không giảm)', p && p.oldPrice ? p.oldPrice : '', '', 'number')}</div>
+      <div class="${L}">Ảnh sản phẩm (dán link hoặc tải ảnh lên)
+        <div class="flex flex-col sm:flex-row gap-3 mt-1 items-start"><img id="pf-prev" src="${esc(img)}" class="w-24 h-24 object-cover rounded-xl bg-slate-100 border">
+          <div class="flex-1 space-y-2 w-full"><input id="pf-image" value="${esc(img.startsWith('data:') ? '' : img)}" oninput="pfImg='';document.getElementById('pf-prev').src=this.value" placeholder="https://..." class="${I} !mt-0">
+          <input type="file" accept="image/*" onchange="pickImage(this)" class="text-xs"></div></div></div>
+      <div class="${L}">Mô tả<textarea id="pf-desc" rows="3" class="${I}">${esc(p ? p.description : '')}</textarea></div>
+      <div><div class="flex justify-between items-center"><b class="text-xs">Phiên bản (màu, dung lượng, giá, tồn kho) *</b><button onclick="addVariantRow()" class="text-xs text-blue-600 font-bold">+ Thêm phiên bản</button></div><div id="pf-variants" class="space-y-2 mt-2"></div></div>
+      <button onclick="saveProduct()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl">${p ? 'Lưu thay đổi' : 'Đưa sản phẩm lên cửa hàng'}</button></div>`;
+    renderVariantRows(); openModal('modal-product-form');
+}
+function renderVariantRows() {
+    const I = "w-full border border-slate-300 rounded-lg p-2 text-xs";
+    document.getElementById('pf-variants').innerHTML = formVariants.map((v, i) => `<div class="grid grid-cols-12 gap-2 items-center">
+      <input id="pv-c${i}" value="${esc(v.color)}" placeholder="Màu" class="${I} col-span-3"><input id="pv-s${i}" value="${esc(v.storage)}" placeholder="256GB" class="${I} col-span-2">
+      <input id="pv-p${i}" type="number" min="0" value="${v.price || ''}" placeholder="Giá bán" class="${I} col-span-3"><input id="pv-k${i}" type="number" min="0" value="${v.stock}" placeholder="Kho" class="${I} col-span-2">
+      <button onclick="delVariantRow(${i})" class="col-span-2 text-red-600 text-xs font-bold">Xóa</button></div>`).join('');
+}
+function readVariants() { formVariants = formVariants.map((v, i) => ({ ...v, color: fv('pv-c' + i), storage: fv('pv-s' + i), price: +fv('pv-p' + i) || 0, stock: Math.max(0, +fv('pv-k' + i) || 0) })); }
+function addVariantRow() { readVariants(); formVariants.push({ sku: '', color: '', storage: '', price: 0, stock: 0 }); renderVariantRows(); }
+function delVariantRow(i) { readVariants(); if (formVariants.length < 2) { showToast("Cần ít nhất 1 phiên bản!", false); return; } formVariants.splice(i, 1); renderVariantRows(); }
+function pickImage(inp) {
+    const f = inp.files[0]; if (!f) return; const r = new FileReader();
+    r.onload = () => { const im = new Image(); im.onload = () => {
+        const sc = Math.min(1, 700 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = im.width * sc; c.height = im.height * sc;
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); pfImg = c.toDataURL('image/jpeg', 0.75);
+        document.getElementById('pf-prev').src = pfImg; document.getElementById('pf-image').value = ''; }; im.src = r.result; };
+    r.readAsDataURL(f);
+}
+function saveProduct() {
+    readVariants();
+    const name = fv('pf-name'), brand = appState.brands.find(b => b.id === fv('pf-brand')), seg = fv('pf-seg');
+    if (!name || !brand) { showToast("Vui lòng nhập tên và chọn thương hiệu!", false); return; }
+    if (formVariants.some(v => !v.color || !v.storage || v.price <= 0)) { showToast("Mỗi phiên bản cần đủ màu, dung lượng và giá > 0!", false); return; }
+    const old = editingPid ? appState.products.find(x => x.id === editingPid) : null;
+    const nlp = { PREMIUM: { "choi game": 90, "camera dep": 90, "cao cap": 95, "sang trong": 90, "man hinh dep": 90 }, MID: { "choi game": 80, "pin trau": 85, "gia tot": 90, "camera dep": 80 }, BUDGET: { "gia tot": 98, "pin trau": 80, "choi game": 60 } };
+    const p = old || { id: "P" + Date.now().toString().slice(-6), nlpWeights: nlp[seg] };
+    const slug = s => s.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+    Object.assign(p, {
+        brandId: brand.id, brandName: brand.name, name, segment: seg, warrantyMonths: +fv('pf-warranty') || 12, oldPrice: +fv('pf-old') || 0,
+        specs: { chip: fv('pf-chip') || '-', ram: fv('pf-ram') || '-', battery: fv('pf-battery') || '-', camera: fv('pf-camera') || '-', screen: fv('pf-screen') || '-', storage: formVariants[0].storage },
+        description: fv('pf-desc') || 'Đang cập nhật mô tả.', image: pfImg || fv('pf-image') || (old && old.image) || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop',
+        variants: formVariants.map((v, i) => ({ ...v, sku: v.sku || `${p.id}-${slug(v.storage)}-${slug(v.color)}-${i + 1}` }))
+    });
+    if (!old) appState.products.push(p);
+    persistData(); addLog('SẢN PHẨM', `${old ? 'Sửa' : 'Thêm mới'} ${p.id} - ${name} (${brand.name}), ${p.variants.length} phiên bản`);
+    closeModal('modal-product-form'); renderAdminProducts(); renderBrandChips(); applyFilters();
+    showToast(old ? "Đã lưu thay đổi sản phẩm" : "Đã đưa sản phẩm mới lên cửa hàng!");
+}
+function deleteProduct(id) {
+    const p = appState.products.find(x => x.id === id); if (!p || !confirm(`Xóa sản phẩm "${p.name}"?`)) return;
+    appState.products = appState.products.filter(x => x.id !== id); appState.cart = appState.cart.filter(c => c.productId !== id);
+    appState.compareList = appState.compareList.filter(x => x !== id); updateCartBadge(); updateCompareBadge();
+    persistData(); addLog('SẢN PHẨM', `Xóa ${id} - ${p.name}`); renderAdminProducts(); renderBrandChips(); applyFilters(); showToast("Đã xóa sản phẩm");
+}
+/* Tab thương hiệu (cần để thêm hãng mới trước khi đăng sản phẩm) */
+function renderAdminBrands() {
+    document.getElementById('admin-content-area').innerHTML = `<div class="bg-white rounded-3xl p-6 border border-slate-200 space-y-4"><h3 class="font-bold text-base">Thương Hiệu</h3>
+      <div class="flex gap-2 text-xs"><input id="br-name" placeholder="Tên hãng" class="border border-slate-300 rounded-xl p-2.5"><input id="br-origin" placeholder="Xuất xứ" class="border border-slate-300 rounded-xl p-2.5"><button onclick="addBrand()" class="bg-blue-600 text-white font-bold px-4 rounded-xl">Thêm hãng</button></div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">${appState.brands.map(b => `<div class="bg-slate-50 rounded-xl p-3 flex justify-between items-center"><div><b>${esc(b.name)}</b><div class="text-slate-500">${esc(b.origin)} • ${appState.products.filter(p => p.brandId === b.id).length} SP</div></div><button onclick="delBrand('${b.id}')" class="text-red-600 font-bold">✕</button></div>`).join('')}</div></div>`;
+}
+function addBrand() {
+    const n = fv('br-name'); if (!n) return; if (appState.brands.some(b => b.name.toLowerCase() === n.toLowerCase())) { showToast("Hãng đã tồn tại!", false); return; }
+    appState.brands.push({ id: "B" + Date.now().toString().slice(-6), name: n, origin: fv('br-origin') || '-' }); persistData(); renderBrandOptions(); renderAdminBrands(); addLog('THƯƠNG HIỆU', `Thêm hãng ${n}`);
+}
+function delBrand(id) {
+    if (appState.products.some(p => p.brandId === id)) { showToast("Hãng đang có sản phẩm, không thể xóa!", false); return; }
+    appState.brands = appState.brands.filter(b => b.id !== id); persistData(); renderBrandOptions(); renderAdminBrands();
+}
+const _sat2 = switchAdminTab;
+switchAdminTab = function (t) {
+    if (t !== 'brands') return _sat2(t);
+    document.querySelectorAll('.admin-tab-btn').forEach(b => b.className = "admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700");
+    document.getElementById('admin-tab-brands').className = "admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white"; renderAdminBrands();
+};
+
+/* ---------- 3. Giao diện cửa hàng giống web bán điện thoại ---------- */
+function ratingOf(p) { const r = appState.reviews.filter(x => x.approved && p.variants.some(v => v.sku === x.sku)); return { n: r.length, avg: r.length ? r.reduce((s, x) => s + x.rating, 0) / r.length : 0 }; }
+renderProductGrid = function (products) {
+    const grid = document.getElementById('product-grid');
+    if (!products || !products.length) { grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-500 bg-white rounded-3xl border border-slate-200"><i class="fa-solid fa-box-open text-5xl mb-3 text-slate-300"></i><p class="font-bold">Không tìm thấy sản phẩm phù hợp.</p></div>`; return; }
+    grid.innerHTML = products.map(p => {
+        const v = p.variants[0], total = p.variants.reduce((s, x) => s + x.stock, 0), out = total === 0, cmp = appState.compareList.includes(p.id), r = ratingOf(p);
+        const off = p.oldPrice > v.price ? Math.round((1 - v.price / p.oldPrice) * 100) : 0;
+        return `<div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group ${out ? 'opacity-70' : ''}">
+          <div class="relative p-4 text-center cursor-pointer bg-slate-50/50" onclick="viewProductDetail('${p.id}')">
+            <span class="absolute top-3 left-3 bg-white/90 border border-slate-200 text-slate-800 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase shadow-sm">${esc(p.brandName)}</span>
+            ${off ? `<span class="absolute top-3 right-3 bg-red-600 text-white text-[11px] font-black px-2 py-1 rounded-lg">-${off}%</span>` : ''}
+            ${out ? `<span class="absolute inset-x-0 bottom-4 mx-auto w-fit bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-full">Hết hàng</span>` : ''}
+            <img src="${p.image}" alt="${esc(p.name)}" class="h-48 w-full object-cover rounded-2xl group-hover:scale-105 transition duration-500"></div>
+          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between"><div>
+            <h3 onclick="viewProductDetail('${p.id}')" class="font-extrabold text-slate-900 text-sm leading-snug line-clamp-2 cursor-pointer hover:text-blue-600">${esc(p.name)}</h3>
+            <div class="flex flex-wrap gap-1 mt-1.5 text-[10px]"><span class="bg-slate-100 font-semibold px-2 py-0.5 rounded">${esc(v.storage)}</span><span class="bg-slate-100 font-semibold px-2 py-0.5 rounded">${esc(p.specs.ram)} RAM</span><span class="bg-slate-100 font-semibold px-2 py-0.5 rounded">${esc(p.specs.battery)}</span></div>
+            <div class="mt-2 flex items-baseline gap-2"><span class="text-lg font-black text-red-600">${formatVND(v.price)}</span>${off ? `<span class="text-[11px] text-slate-400 line-through">${formatVND(p.oldPrice)}</span>` : ''}</div>
+            <div class="mt-1 flex flex-wrap items-center gap-1.5 text-[10px]"><span class="bg-blue-50 text-blue-700 font-bold px-1.5 py-0.5 rounded">Trả góp 0%</span>
+              ${r.n ? `<span class="text-amber-500 font-bold"><i class="fa-solid fa-star"></i> ${r.avg.toFixed(1)} <span class="text-slate-400 font-normal">(${r.n})</span></span>` : `<span class="text-slate-400">Chưa có đánh giá</span>`}
+              ${!out && total <= 5 ? `<span class="text-orange-600 font-bold">Sắp hết hàng</span>` : ''}</div></div>
+          <div class="space-y-2 pt-3 border-t border-slate-100"><div class="flex gap-2">
+            <button ${out ? 'disabled' : ''} onclick="buyNow('${p.id}','${v.sku}')" class="flex-1 ${out ? 'bg-slate-300' : 'bg-blue-600 hover:bg-blue-700'} text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5"><i class="fa-solid fa-bolt"></i> Mua Ngay</button>
+            <button ${out ? 'disabled' : ''} onclick="addToCart('${p.id}','${v.sku}')" class="bg-blue-50 text-blue-600 hover:bg-blue-100 p-2.5 rounded-xl" title="Thêm giỏ hàng"><i class="fa-solid fa-cart-plus text-base"></i></button></div>
+            <button onclick="toggleCompare('${p.id}')" class="w-full text-[11px] font-semibold ${cmp ? 'text-orange-600 bg-orange-50' : 'text-slate-500 hover:text-blue-600'} py-1.5 rounded-lg border border-slate-200 flex items-center justify-center gap-1"><i class="fa-solid fa-code-compare"></i> ${cmp ? 'Đã thêm so sánh' : 'So sánh cấu hình'}</button></div></div></div>`;
+    }).join('');
+};
+function renderBrandChips() {
+    const cur = document.getElementById('filter-brand').value, ids = [...new Set(appState.products.map(p => p.brandId))];
+    const chip = (id, label) => `<button onclick="setBrandChip('${id}')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold border ${cur === id ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400'}">${esc(label)}</button>`;
+    document.getElementById('brand-chips').innerHTML = chip('ALL', 'Tất cả') + appState.brands.filter(b => ids.includes(b.id)).map(b => chip(b.id, b.name)).join('');
+}
+function setBrandChip(id) { document.getElementById('filter-brand').value = id; applyFilters(); }
+const _applyFilters = applyFilters; applyFilters = function () { _applyFilters(); renderBrandChips(); };
+const _resetFilters = resetFilters; resetFilters = function () { _resetFilters(); renderBrandChips(); };
+const _renderBrandOptions = renderBrandOptions; renderBrandOptions = function () { _renderBrandOptions(); renderBrandChips(); };
+document.getElementById('product-grid').insertAdjacentHTML('beforebegin', `<div id="brand-chips" class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar"></div>`);
+document.getElementById('products-anchor').insertAdjacentHTML('beforebegin', `<div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+  ${[['fa-truck-fast', 'Giao hàng 2H', 'Nội thành Đà Nẵng, miễn phí'], ['fa-shield-halved', 'Bảo hành chính hãng', 'Tra cứu bằng IMEI'], ['fa-rotate-left', 'Đổi trả 30 ngày', 'Lỗi do nhà sản xuất'], ['fa-credit-card', 'Trả góp 0%', 'Duyệt nhanh trong 15 phút']].map(x => `<div class="bg-white rounded-2xl border border-slate-200 p-3 flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid ${x[0]}"></i></div><div><div class="font-bold text-slate-900">${x[1]}</div><div class="text-slate-500">${x[2]}</div></div></div>`).join('')}</div>`);
+document.getElementById('app-viewport').insertAdjacentHTML('afterend', `<footer class="bg-slate-900 text-slate-300 text-xs mt-8"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+  <div class="space-y-2"><div class="text-lg font-black text-white">PHONE<span class="text-blue-500">STORE</span></div><p>Hệ thống bán lẻ điện thoại và phụ kiện chính hãng.</p><p><i class="fa-solid fa-phone"></i> Hotline: <b class="text-white">1800 6789</b> (8h - 21h)</p><p><i class="fa-solid fa-envelope"></i> cskh@phonestore.vn</p></div>
+  <div class="space-y-1.5"><div class="font-bold text-white">Chính sách</div><p>Chính sách bảo hành</p><p>Chính sách đổi trả</p><p>Hướng dẫn mua hàng & trả góp</p><p>Bảo mật thông tin</p></div>
+  <div class="space-y-1.5 md:col-span-2"><div class="font-bold text-white">Hệ thống showroom</div>${appState.stores.map(s => `<p><i class="fa-solid fa-location-dot text-blue-500"></i> <b class="text-white">${esc(s.name)}</b> - ${esc(s.address)} - ${esc(s.phone)}</p>`).join('')}</div></div>
+  <div class="border-t border-slate-800 text-center py-3 text-slate-500">© 2026 PhoneStore. Đồ án website quản lý bán điện thoại.</div></footer>`);
+renderBrandChips(); renderProductGrid(appState.products); renderAdminProducts();
+</script>
+
+<script>
+/* ===== BỔ SUNG LẦN 3: ~60 sản phẩm, doanh thu & số liệu tự cập nhật và lưu ===== */
+// brandId | tên | RAM | bộ nhớ | pin | chip | camera | màn hình | giá (triệu) | giá gốc (triệu, tùy chọn)
+const SEED_ROWS = `B1|iPhone 18|8GB|128GB|3900mAh|Apple A20|48MP Fusion|6.1 inch OLED 120Hz|22.99|24.99
+B1|iPhone 18 Plus|8GB|256GB|4900mAh|Apple A20|48MP Fusion|6.7 inch OLED 120Hz|26.99
+B1|iPhone 17 Pro Max|12GB|256GB|4700mAh|Apple A19 Pro|48MP Triple|6.9 inch OLED 120Hz|27.49|30.99
+B1|iPhone 17|8GB|128GB|3600mAh|Apple A19|48MP Dual|6.3 inch OLED 120Hz|19.99|22.49
+B1|iPhone 17e|8GB|128GB|3400mAh|Apple A19|48MP|6.1 inch OLED 60Hz|13.99
+B1|iPhone 15|6GB|128GB|3349mAh|Apple A16 Bionic|48MP Dual|6.1 inch OLED 60Hz|14.49|16.99
+B2|Galaxy S26|12GB|256GB|4300mAh|Snapdragon 8 Gen 5|50MP Triple|6.3 inch Dynamic AMOLED 120Hz|22.99
+B2|Galaxy S26+|12GB|256GB|4900mAh|Snapdragon 8 Gen 5|50MP Triple|6.7 inch Dynamic AMOLED 120Hz|26.99
+B2|Galaxy Z Fold7|12GB|512GB|4400mAh|Snapdragon 8 Elite|200MP Triple|7.6 inch Foldable AMOLED|44.99|47.99
+B2|Galaxy Z Flip7|12GB|256GB|4300mAh|Exynos 2500|50MP Dual|6.9 inch Foldable AMOLED|24.99
+B2|Galaxy S25 FE|8GB|128GB|4900mAh|Exynos 2400|50MP Triple|6.7 inch AMOLED 120Hz|12.99|14.49
+B2|Galaxy A57 5G|8GB|128GB|5000mAh|Exynos 1580|50MP OIS|6.6 inch Super AMOLED 120Hz|10.99
+B2|Galaxy A37 5G|8GB|128GB|5000mAh|Exynos 1480|50MP OIS|6.6 inch Super AMOLED 120Hz|8.99
+B2|Galaxy A17|6GB|128GB|5000mAh|Helio G99|50MP|6.7 inch Super AMOLED 90Hz|5.29|5.99
+B2|Galaxy A07|4GB|64GB|5000mAh|Helio G85|50MP|6.7 inch PLS LCD 90Hz|3.49
+B3|Xiaomi 15 Ultra|16GB|512GB|6000mAh|Snapdragon 8 Gen 4|50MP Leica Quad|6.73 inch 2K LTPO AMOLED|29.99|32.99
+B3|Xiaomi 15|12GB|256GB|5400mAh|Snapdragon 8 Gen 4|50MP Leica Triple|6.36 inch AMOLED 120Hz|18.99|20.99
+B3|Xiaomi 15T|12GB|256GB|5500mAh|Dimensity 9400+|50MP Leica|6.83 inch AMOLED 144Hz|13.99
+B3|Redmi Note 15 Pro+|12GB|256GB|6500mAh|Snapdragon 7s Gen 4|200MP OIS|6.83 inch AMOLED 120Hz|9.99|10.99
+B3|Redmi Note 15|8GB|128GB|5500mAh|Helio G100 Ultra|108MP|6.67 inch AMOLED 120Hz|5.99
+B3|Redmi 15C|4GB|128GB|5160mAh|Helio G81 Ultra|50MP|6.9 inch LCD 90Hz|3.69
+B4|OPPO Find X9 Pro|16GB|512GB|7500mAh|Dimensity 9500|200MP Hasselblad|6.78 inch LTPO AMOLED 120Hz|27.99
+B4|OPPO Find X9|12GB|256GB|7025mAh|Dimensity 9500|50MP Hasselblad|6.59 inch LTPO AMOLED 120Hz|21.99
+B4|OPPO Reno15 Pro 5G|12GB|256GB|6200mAh|Dimensity 8450|50MP Triple|6.83 inch AMOLED 120Hz|17.99
+B4|OPPO Reno15 5G|12GB|256GB|6500mAh|Dimensity 8350|50MP Dual|6.59 inch AMOLED 120Hz|13.99|14.99
+B4|OPPO A6 Pro|8GB|128GB|7000mAh|Dimensity 6300|50MP|6.57 inch AMOLED 120Hz|6.49
+B5|vivo X300 Pro|16GB|512GB|6510mAh|Dimensity 9500|200MP ZEISS|6.78 inch LTPO AMOLED 120Hz|24.99
+B5|vivo X300|12GB|256GB|6040mAh|Dimensity 9500|50MP ZEISS|6.31 inch AMOLED 120Hz|20.99
+B5|vivo V60 5G|12GB|256GB|6500mAh|Snapdragon 7 Gen 4|50MP ZEISS|6.77 inch AMOLED 120Hz|14.99|15.99
+B5|vivo Y400 5G|8GB|256GB|6000mAh|Snapdragon 4 Gen 2|50MP|6.67 inch AMOLED 120Hz|7.99
+B5|vivo Y29s|8GB|256GB|6000mAh|Dimensity 6300|50MP|6.68 inch LCD 90Hz|5.49
+B6|ASUS ROG Phone 10 Pro|24GB|1TB|6000mAh|Snapdragon 8 Elite|50MP Triple|6.78 inch AMOLED 185Hz|32.99
+B6|ASUS ROG Phone 10|16GB|512GB|6000mAh|Snapdragon 8 Elite|50MP Triple|6.78 inch AMOLED 165Hz|25.99
+B6|ASUS Zenfone 13 Ultra|12GB|256GB|5500mAh|Snapdragon 8 Elite|50MP Gimbal|6.78 inch AMOLED 144Hz|21.99
+B7|Google Pixel 11 Pro XL|16GB|256GB|5200mAh|Google Tensor G6|50MP Triple|6.8 inch LTPO OLED 120Hz|30.99
+B7|Google Pixel 11 Pro|16GB|256GB|4700mAh|Google Tensor G6|50MP Triple|6.3 inch LTPO OLED 120Hz|26.99
+B7|Google Pixel 11|12GB|128GB|4600mAh|Google Tensor G6|50MP Dual|6.2 inch OLED 120Hz|19.99
+B7|Google Pixel 10a|8GB|128GB|5100mAh|Google Tensor G5|48MP Dual|6.3 inch OLED 120Hz|13.99|14.99
+B8|realme GT 8 Pro|16GB|512GB|7000mAh|Snapdragon 8 Elite|200MP Periscope|6.79 inch AMOLED 144Hz|21.99
+B8|realme 15 Pro 5G|12GB|256GB|7000mAh|Snapdragon 7 Gen 4|50MP Dual|6.8 inch AMOLED 120Hz|12.99
+B8|realme 15 5G|8GB|256GB|7000mAh|Dimensity 7300|50MP|6.8 inch AMOLED 120Hz|9.49
+B8|realme Narzo 90x|6GB|128GB|6000mAh|Dimensity 6300|50MP|6.72 inch LCD 120Hz|5.49
+B8|realme C85|6GB|128GB|6000mAh|Helio G100|50MP|6.8 inch LCD 90Hz|4.99
+B9|POCO F8 Pro|12GB|256GB|6210mAh|Snapdragon 8 Elite|50MP OIS|6.59 inch AMOLED 120Hz|15.99
+B9|POCO F8|12GB|256GB|6500mAh|Snapdragon 8s Gen 4|50MP OIS|6.9 inch AMOLED 120Hz|11.99
+B9|POCO X8 Pro|8GB|256GB|6500mAh|Dimensity 8500|50MP OIS|6.59 inch AMOLED 120Hz|9.99
+B9|POCO M8|8GB|256GB|5520mAh|Snapdragon 6 Gen 3|50MP|6.77 inch AMOLED 120Hz|5.99
+B10|Infinix Zero 40 5G|12GB|256GB|5200mAh|Dimensity 8200|108MP OIS|6.78 inch Curved AMOLED 144Hz|8.99
+B10|Infinix Note 50 Pro+|12GB|256GB|5200mAh|Dimensity 7300|50MP Periscope|6.78 inch AMOLED 144Hz|8.49
+B10|Infinix Hot 60 Pro|8GB|256GB|5160mAh|Helio G100|50MP|6.78 inch AMOLED 120Hz|5.29
+B10|Infinix Smart 10|4GB|128GB|5000mAh|Unisoc T7250|13MP|6.67 inch LCD 90Hz|2.79
+B11|Tecno Phantom V Fold3|12GB|512GB|5750mAh|Dimensity 9000+|50MP Triple|7.85 inch Foldable LTPO|28.99
+B11|Tecno Camon 40 Pro|12GB|256GB|5200mAh|Helio G100|50MP OIS|6.78 inch AMOLED 120Hz|7.99
+B11|Tecno Pova 7|8GB|256GB|7000mAh|Dimensity 7300|50MP|6.78 inch IPS 144Hz|6.49
+B11|Tecno Spark 40 Pro|8GB|256GB|5200mAh|Helio G200|50MP|6.78 inch AMOLED 120Hz|5.19
+B12|Sony Xperia 1 VIII|16GB|512GB|5000mAh|Snapdragon 8 Elite|48MP ZEISS Triple|6.5 inch 4K OLED 120Hz|36.99
+B12|Sony Xperia 5 VII|12GB|256GB|5000mAh|Snapdragon 8 Elite|48MP ZEISS Dual|6.1 inch OLED 120Hz|23.99
+B12|Sony Xperia 10 VII|8GB|128GB|5000mAh|Snapdragon 6 Gen 3|48MP Dual|6.1 inch OLED 60Hz|11.99`;
+// Cập nhật hàm tạo ảnh thông minh hơn cho các sản phẩm chưa có ảnh thực tế
+function phoneImg(name, brand, i) {
+    // Danh sách ảnh mẫu chất lượng cao phân theo thương hiệu để hiển thị trực quan ngay lập tức
+    const brandLower = (brand || '').toLowerCase();
+    const nameLower = (name || '').toLowerCase();
+    
+    if (brandLower.includes('apple') || nameLower.includes('iphone')) {
+        return "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=800&auto=format&fit=crop";
+    } else if (brandLower.includes('samsung') || nameLower.includes('galaxy')) {
+        return "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=800&auto=format&fit=crop";
+    } else if (brandLower.includes('xiaomi') || nameLower.includes('redmi')) {
+        return "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=800&auto=format&fit=crop";
+    } else if (brandLower.includes('oppo') || brandLower.includes('reno')) {
+        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop";
+    } else if (brandLower.includes('vivo')) {
+        return "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?q=80&w=800&auto=format&fit=crop";
+    } else if (brandLower.includes('google') || nameLower.includes('pixel')) {
+        return "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=800&auto=format&fit=crop";
+    }
+
+    // Fallback ảnh dạng vector SVG hiện đại nếu không khớp thương hiệu trên
+    const h = (i * 47) % 360;
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='hsl(${h},70%,93%)'/><stop offset='1' stop-color='hsl(${(h + 40) % 360},70%,78%)'/></linearGradient></defs><rect width='600' height='600' fill='url(#g)'/><rect x='215' y='70' width='170' height='360' rx='28' fill='hsl(${h},40%,18%)'/><rect x='225' y='82' width='150' height='336' rx='20' fill='hsl(${h},60%,48%)'/><circle cx='300' cy='104' r='6' fill='#0f172a'/><text x='300' y='480' font-family='Arial' font-size='22' font-weight='700' text-anchor='middle' fill='#475569'>${(brand || '').toUpperCase()}</text><text x='300' y='520' font-family='Arial' font-size='26' font-weight='800' text-anchor='middle' fill='#0f172a'>${name}</text></svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+function buildSeedProducts(brands) {
+    const COLORS = ["Đen", "Xanh Dương", "Trắng", "Xám Titan", "Tím", "Xanh Lá"], NEXT = { "64GB": "128GB", "128GB": "256GB", "256GB": "512GB", "512GB": "1TB" };
+    return SEED_ROWS.split('\n').map((line, i) => {
+        const [bid, name, ram, sto, bat, chip, cam, scr, pm, om] = line.split('|'), price = Math.round(+pm * 1e6), old = om ? Math.round(+om * 1e6) : 0;
+        const brand = brands.find(b => b.id === bid), id = "P" + (101 + i), seg = price < 7e6 ? 'BUDGET' : price <= 18e6 ? 'MID' : 'PREMIUM';
+        const mah = parseInt(bat), mp = parseInt(cam);
+        const nlp = { "choi game": price >= 15e6 ? 92 : price >= 7e6 ? 80 : 60, "pin trau": mah >= 6000 ? 95 : mah >= 5000 ? 85 : 70, "camera dep": mp >= 100 ? 95 : price >= 15e6 ? 90 : 75, "sac nhanh": mah >= 6000 ? 90 : 75, "gia tot": price < 10e6 ? 95 : 70, "cao cap": price >= 18e6 ? 95 : 55, "sang trong": price >= 20e6 ? 92 : 65, "man hinh dep": price >= 10e6 ? 90 : 72 };
+        const s1 = i % 19 === 5 ? 0 : (i * 7) % 23 + 3, c1 = COLORS[i % 6], variants = [{ sku: `${id}-${sto}-1`, color: c1, storage: sto, price, stock: s1 }];
+        if (NEXT[sto]) variants.push({ sku: `${id}-${NEXT[sto]}-2`, color: COLORS[(i + 2) % 6], storage: NEXT[sto], price: Math.round(price * 1.12 / 1e6) * 1e6 - 10000, stock: i % 19 === 5 ? 0 : (i * 5) % 13 + 2 });
+        return {
+            id, brandId: bid, brandName: brand ? brand.name : bid, name, segment: seg, warrantyMonths: bid === 'B3' || bid === 'B9' ? 18 : 12, oldPrice: old,
+            specs: { ram, storage: sto, battery: bat, chip, camera: cam, screen: scr }, nlpWeights: nlp, variants, image: phoneImg(name, brand ? brand.name : '', i),
+            description: `${name} trang bị chip ${chip}, RAM ${ram}, pin ${bat}, camera ${cam} và màn hình ${scr}. Hàng chính hãng, bảo hành điện tử theo IMEI.`
+        };
+    });
+}
+// Nạp sản phẩm mẫu 1 lần, giữ nguyên sản phẩm đang có (kể cả sản phẩm admin đã thêm)
+if (!getStorage("SEED_V3", false)) {
+    const have = new Set(appState.products.map(p => p.id));
+    buildSeedProducts(appState.brands).forEach(p => { if (!have.has(p.id)) appState.products.push(p); });
+    setStorage("PRODUCTS", appState.products); setStorage("SEED_V3", true);
+}
+
+/* ---------- Thống kê & báo cáo doanh thu (tính lại từ đơn hàng đã lưu) ---------- */
+const itemProduct = it => appState.products.find(p => p.id === it.productId) || appState.products.find(p => p.variants.some(v => v.sku === it.sku));
+function orderStats() {
+    const O = appState.orders, ok = O.filter(o => o.status !== 'CANCELLED'), del = O.filter(o => o.status === 'DELIVERED'), sum = (l, f) => l.reduce((s, o) => s + f(o), 0);
+    return {
+        O, ok, del, revenue: sum(del, o => o.total), expected: sum(ok.filter(o => o.status !== 'DELIVERED'), o => o.total), discount: sum(ok, o => o.discount || 0),
+        pending: O.filter(o => o.status === 'PENDING').length, cancelled: O.length - ok.length, units: sum(del, o => o.items.reduce((s, i) => s + i.qty, 0)),
+        stock: appState.products.reduce((s, p) => s + p.variants.reduce((a, v) => a + v.stock, 0), 0),
+        stockValue: appState.products.reduce((s, p) => s + p.variants.reduce((a, v) => a + v.stock * v.price, 0), 0)
+    };
+}
+function renderKpi() {
+    const el = document.getElementById('admin-kpi'); if (!el) return; const t = orderStats();
+    const c = (l, v, cls) => `<div class="bg-white border border-slate-200 rounded-2xl p-3"><div class="text-[10px] uppercase font-bold text-slate-500">${l}</div><div class="text-base font-black ${cls || 'text-slate-900'}">${v}</div></div>`;
+    el.innerHTML = c('Doanh thu đã giao', formatVND(t.revenue), 'text-green-600') + c('Dự kiến (đang xử lý)', formatVND(t.expected), 'text-blue-600') + c('Đơn chờ xử lý', t.pending, 'text-amber-600') + c('Tổng đơn hàng', t.O.length) + c('Tồn kho (máy)', t.stock);
+}
+document.querySelector('#page-admin .flex.flex-wrap.gap-2.border-b').insertAdjacentHTML('beforebegin', `<div id="admin-kpi" class="grid grid-cols-2 md:grid-cols-5 gap-3"></div>`);
+function renderAdminAnalytics() {
+    const t = orderStats(), bar = (label, val, max, txt) => `<div class="text-xs"><div class="flex justify-between"><span>${label}</span><b>${txt}</b></div><div class="h-2 bg-slate-100 rounded-full mt-1"><div class="h-2 bg-blue-600 rounded-full" style="width:${max ? Math.max(2, val / max * 100) : 0}%"></div></div></div>`;
+    const day = {}; t.del.forEach(o => { const h = (o.history || []).filter(x => x.status === 'DELIVERED').pop(), d = (h ? h.time : o.createdAt).slice(0, 10); day[d] = (day[d] || 0) + o.total; });
+    const days = Object.entries(day).sort().slice(-10), dmax = Math.max(0, ...days.map(x => x[1]));
+    const br = {}, pr = {}; t.ok.forEach(o => o.items.forEach(i => { const p = itemProduct(i), b = p ? p.brandName : 'Khác', r = i.price * i.qty;
+        br[b] = br[b] || { q: 0, r: 0 }; br[b].q += i.qty; br[b].r += r; pr[i.name] = pr[i.name] || { q: 0, r: 0 }; pr[i.name].q += i.qty; pr[i.name].r += r; }));
+    const brs = Object.entries(br).sort((a, b) => b[1].r - a[1].r), prs = Object.entries(pr).sort((a, b) => b[1].q - a[1].q).slice(0, 8);
+    const card = (l, v, cls) => `<div class="bg-white border border-slate-200 rounded-2xl p-4"><div class="text-[10px] uppercase font-bold text-slate-500">${l}</div><div class="text-lg font-black ${cls || ''}">${v}</div></div>`;
+    document.getElementById('admin-content-area').innerHTML = `<div class="space-y-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">${card('Doanh thu đã giao', formatVND(t.revenue), 'text-green-600')}${card('Doanh thu dự kiến', formatVND(t.expected), 'text-blue-600')}${card('Giá trị TB / đơn', formatVND(t.del.length ? Math.round(t.revenue / t.del.length) : 0))}${card('Tổng giảm giá đã dùng', formatVND(t.discount), 'text-red-600')}
+        ${card('Máy đã bán (đã giao)', t.units)}${card('Đơn đã hủy', t.cancelled)}${card('Tổng tồn kho', t.stock + ' máy')}${card('Giá trị tồn kho', formatVND(t.stockValue))}</div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3"><h3 class="font-bold text-sm">Doanh thu theo ngày (đã giao)</h3>${days.map(d => bar(d[0], d[1], dmax, formatVND(d[1]))).join('') || '<p class="text-xs text-slate-400">Chưa có đơn đã giao</p>'}</div>
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3"><h3 class="font-bold text-sm">Doanh thu theo hãng (đơn không hủy)</h3>${brs.map(b => bar(`${b[0]} • ${b[1].q} máy`, b[1].r, brs[0][1].r, formatVND(b[1].r))).join('') || '<p class="text-xs text-slate-400">Chưa có dữ liệu</p>'}</div>
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3 lg:col-span-2"><h3 class="font-bold text-sm">Top sản phẩm bán chạy</h3>${prs.map(p => bar(`${p[0]} • ${p[1].q} máy`, p[1].q, prs[0][1].q, formatVND(p[1].r))).join('') || '<p class="text-xs text-slate-400">Chưa có dữ liệu</p>'}</div></div></div>`;
+}
+
+/* ---------- Mọi thay đổi (đơn, kho, IMEI, mã giảm giá...) đều lưu rồi tự cập nhật các màn hình ---------- */
+var adminTab = 'products';
+const _sat3 = switchAdminTab; switchAdminTab = function (t) { adminTab = t; _sat3(t); renderKpi(); };
+function refreshViews() {
+    try {
+        renderStaffOrders(); applyFilters(); renderKpi();
+        if (!document.getElementById('page-admin').classList.contains('hidden') && document.getElementById('modal-product-form').classList.contains('hidden')) {
+            ({ products: renderAdminProducts, orders: renderAdminOrders, vouchers: renderAdminVouchers, analytics: renderAdminAnalytics, logs: renderAdminLogs, brands: renderAdminBrands })[adminTab]?.();
+        }
+    } catch (e) { console.warn(e); }
+}
+const _persistData = persistData; persistData = function () { _persistData(); refreshViews(); };
+const _addLog = addLog; addLog = function (a, b) { _addLog(a, b); if (adminTab === 'logs' && !document.getElementById('page-admin').classList.contains('hidden')) renderAdminLogs(); };
+// Lọc nhanh trong bảng sản phẩm admin (60+ sản phẩm)
+var apq = '';
+function filterAdminRows() { document.querySelectorAll('#admin-content-area tbody tr').forEach(r => r.classList.toggle('hidden', !!apq && !r.textContent.toLowerCase().includes(apq))); }
+const _rap = renderAdminProducts;
+renderAdminProducts = function () {
+    _rap(); const b = document.querySelector('#admin-content-area button[onclick="openProductForm()"]');
+    if (b) b.insertAdjacentHTML('beforebegin', `<input value="${esc(apq)}" oninput="apq=this.value.toLowerCase().trim();filterAdminRows()" placeholder="Tìm tên, hãng, mã sản phẩm..." class="border border-slate-300 rounded-xl p-2.5 text-xs sm:w-64">`);
+    filterAdminRows();
+};
+
+/* ---------- Duyệt đơn: gán IMEI cho từng máy, tự tạo IMEI nếu kho chưa có ---------- */
+completeStaffOrder = function (id) {
+    const o = appState.orders.find(x => x.orderId === id); if (!o || !['PENDING', 'CONFIRMED', 'SHIPPING'].includes(o.status)) return;
+    const wh = appState.imeiWarehouse, list = [], fmt = d => d.toISOString().slice(0, 10);
+    o.items.forEach(it => {
+        const p = itemProduct(it) || {};
+        for (let k = 0; k < it.qty; k++) {
+            let rec = wh.find(w => w.status === 'AVAILABLE' && w.sku === it.sku);
+            if (!rec) { let im; do { im = '35' + String(Math.floor(Math.random() * 1e13)).padStart(13, '0'); } while (wh.some(w => w.imei === im)); rec = { imei: im, sku: it.sku, productName: `${it.name} (${it.color})` }; wh.push(rec); }
+            const e = new Date(); e.setMonth(e.getMonth() + (p.warrantyMonths || 12));
+            Object.assign(rec, { status: 'ASSIGNED', orderId: o.orderId, customer: o.customerName, phone: o.phone, activeDate: fmt(new Date()), expireDate: fmt(e) }); list.push(rec.imei);
+        }
+    });
+    o.assignedIMEI = list.join(', '); o.status = 'DELIVERED'; pushHistory(o, 'DELIVERED');
+    persistData(); addLog('ĐƠN HÀNG', `${id} hoàn tất giao hàng, IMEI: ${o.assignedIMEI}, doanh thu +${o.total}`); showToast(`Đã giao đơn ${id} và gán ${list.length} IMEI`);
+};
+const _uos = updateOrderStatus;
+updateOrderStatus = function (id) {
+    const o = appState.orders.find(x => x.orderId === id), before = o.status; _uos(id);
+    if (before !== 'CANCELLED' && o.status === 'CANCELLED' && o.voucher) { const v = appState.vouchers.find(x => x.code === o.voucher); if (v) { v.usageLeft++; persistData(); } }
+};
+renderBrandChips(); applyFilters(); renderKpi(); renderAdminProducts();
+</script>
+
+<script>
+/* ===== BỔ SUNG LẦN 4: chuyển vai trò không nhập lại mật khẩu + nhập ảnh hàng loạt ===== */
+// Đã đăng nhập (Admin/Nhân viên) thì qua lại Khách hàng / Nhân viên / Admin tự do; chỉ hỏi mật khẩu khi chưa xác thực vai trò đó trong phiên này.
+// Đăng xuất (hoặc tải lại trang) mới xóa phiên và yêu cầu đăng nhập lại.
+switchRole = function (role) {
+    if (role === 'admin' || role === 'staff') {
+        if (appState.auth[role] || (role === 'staff' && appState.auth.admin)) { if (appState.currentRole !== role) addLog('CHUYỂN VAI TRÒ', `${appState.currentUser ? appState.currentUser.name : ''} → ${role.toUpperCase()}`); return _switchRole(role); }
+        pendingRole = role;
+        document.getElementById('role-login-title').innerText = role === 'admin' ? 'Đăng nhập Quản lý (Admin)' : 'Đăng nhập Nhân viên';
+        document.getElementById('role-login-user').value = ''; document.getElementById('role-login-pass').value = '';
+        document.getElementById('role-login-err').classList.add('hidden'); openModal('modal-role-login'); return;
+    }
+    _switchRole(role);   // về Khách hàng / Khách vãng lai: giữ nguyên phiên đăng nhập
+};
+
+/* ---------- Nhập ảnh hàng loạt cho sản phẩm ---------- */
+const normTxt = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9+]/g, '');
+function findProd(text) {
+    const n = normTxt(text); if (!n) return null; const P = appState.products;
+    let m = P.find(p => normTxt(p.name) === n) || P.find(p => normTxt(p.brandName + p.name) === n) || P.find(p => p.id.toLowerCase() === n);
+    if (m) return m;
+    m = P.filter(p => n.includes(normTxt(p.name))).sort((a, b) => b.name.length - a.name.length)[0];   // tên file chứa tên máy (chọn tên dài nhất)
+    return m || null;
+}
+document.body.insertAdjacentHTML('beforeend', `<div id="modal-bulk-img" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4"><div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative space-y-4 text-xs custom-scrollbar">
+  <button onclick="closeModal('modal-bulk-img')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 rounded-full w-8 h-8 font-bold">✕</button>
+  <h3 class="text-lg font-black">Nhập ảnh hàng loạt cho sản phẩm</h3>
+  <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2"><b>Cách 1: Chọn nhiều file ảnh từ máy (khuyên dùng, ảnh lưu hẳn trong web)</b>
+    <p class="text-slate-500">Đặt tên file giống tên máy, ví dụ <span class="font-mono">iPhone 18 Pro Max.jpg</span>, <span class="font-mono">galaxy-s26.png</span>. Web tự ghép đúng sản phẩm, tự thu nhỏ ảnh để tiết kiệm bộ nhớ.</p>
+    <input type="file" multiple accept="image/*" onchange="bulkFiles(this.files)"></div>
+  <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2"><b>Cách 2: Dán danh sách link ảnh</b>
+    <p class="text-slate-500">Mỗi dòng một sản phẩm, dạng <span class="font-mono">Tên sản phẩm | https://link-anh.jpg</span> (chuột phải vào ảnh → Sao chép địa chỉ hình ảnh). Link có thể hỏng nếu trang gốc đổi hoặc chặn.</p>
+    <textarea id="bulk-urls" rows="5" class="w-full border border-slate-300 rounded-xl p-2.5 font-mono" placeholder="Galaxy S26 | https://...\niPhone 18 | https://..."></textarea>
+    <button onclick="bulkUrls()" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-xl">Áp dụng link</button></div>
+  <div id="bulk-result" class="space-y-1"></div></div></div>`);
+const _rap2 = renderAdminProducts;
+renderAdminProducts = function () {
+    _rap2(); const b = document.querySelector('#admin-content-area button[onclick="openProductForm()"]');
+    if (b) b.insertAdjacentHTML('beforebegin', `<button onclick="document.getElementById('bulk-result').innerHTML='';openModal('modal-bulk-img')" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2.5 rounded-xl text-xs"><i class="fa-solid fa-images"></i> Nhập ảnh hàng loạt</button>`);
+};
+function bulkSave(ok, bad) {
+    try { persistData(); } catch (e) { showToast("Bộ nhớ trình duyệt đầy, hãy dùng ảnh nhỏ hơn hoặc ít ảnh hơn mỗi lần!", false); return; }
+    addLog('SẢN PHẨM', `Nhập ảnh hàng loạt: ${ok.length} ảnh thành công, ${bad.length} không ghép được`);
+    document.getElementById('bulk-result').innerHTML = `<div class="text-green-700 font-bold">✓ Đã cập nhật ảnh cho ${ok.length} sản phẩm</div>${ok.map(x => `<div class="text-slate-600">${esc(x)}</div>`).join('')}` +
+        (bad.length ? `<div class="text-red-600 font-bold pt-2">Không ghép được ${bad.length} mục (kiểm tra lại tên):</div>${bad.map(x => `<div class="text-red-500">${esc(x)}</div>`).join('')}` : '');
+    showToast(`Đã cập nhật ${ok.length} ảnh sản phẩm`);
+}
+function shrink(file) {
+    return new Promise(res => { const r = new FileReader(); r.onload = () => { const im = new Image(); im.onload = () => {
+        const sc = Math.min(1, 520 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = im.width * sc; c.height = im.height * sc;
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height); res(c.toDataURL('image/jpeg', 0.72)); };
+        im.onerror = () => res(null); im.src = r.result; }; r.onerror = () => res(null); r.readAsDataURL(file); });
+}
+async function bulkFiles(files) {
+    const ok = [], bad = [];
+    for (const f of files) {
+        const p = findProd(f.name.replace(/\.[^.]+$/, '')), data = p ? await shrink(f) : null;
+        if (p && data) { p.image = data; ok.push(`${f.name} → ${p.name}`); } else bad.push(f.name);
+    }
+    bulkSave(ok, bad);
+}
+function bulkUrls() {
+    const ok = [], bad = [];
+    document.getElementById('bulk-urls').value.split('\n').map(l => l.trim()).filter(Boolean).forEach(l => {
+        const i = l.indexOf('|'), name = i > 0 ? l.slice(0, i) : '', url = i > 0 ? l.slice(i + 1).trim() : '', p = findProd(name);
+        if (p && /^https?:\/\//i.test(url)) { p.image = url; ok.push(`${p.name} ← link`); } else bad.push(l.slice(0, 60));
+    });
+    bulkSave(ok, bad);
+}
+renderAdminProducts();
+</script>
+
+<script>
+/* ===== BỔ SUNG LẦN 5: TỰ ĐỘNG TÌM & GẮN ẢNH ĐÚNG TỪNG DÒNG SẢN PHẨM ===== */
+// 1) Bấm ra chỗ khác (hoặc nhấn Esc) thì menu tài khoản tự ẩn
+document.addEventListener('click', e => {
+    const m = document.getElementById('user-menu');
+    if (m && !m.classList.contains('hidden') && !e.target.closest('#user-menu, #btn-auth')) m.classList.add('hidden');
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('user-menu').classList.add('hidden'); });
+
+// 2) Bộ ảnh thật phân loại chi tiết theo từng dòng thiết bị (khi kho ảnh online chưa có model 2026)
+const DEVICE_SERIES_IMAGES = {
+    IPHONE_PRO: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=800&auto=format&fit=crop",
+    IPHONE_STD: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=800&auto=format&fit=crop",
+    GALAXY_ULTRA: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=800&auto=format&fit=crop",
+    GALAXY_FOLD: "https://images.unsplash.com/photo-1678911820864-e2c567c655d7?q=80&w=800&auto=format&fit=crop",
+    GALAXY_MID: "https://images.unsplash.com/photo-1585060544812-6b45742d762f?q=80&w=800&auto=format&fit=crop",
+    XIAOMI_PRO: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=800&auto=format&fit=crop",
+    PIXEL: "https://images.unsplash.com/photo-1635870723802-e88d76ae324e?q=80&w=800&auto=format&fit=crop",
+    GAMING_PHONE: "https://images.unsplash.com/photo-1546054454-aa26e2b734c7?q=80&w=800&auto=format&fit=crop",
+    ANDROID_FLAGSHIP: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?q=80&w=800&auto=format&fit=crop",
+    ANDROID_MODERN: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop"
+};
+
+function getMatchedSeriesImage(p) {
+    const n = (p.name || '').toLowerCase();
+    if (n.includes('iphone')) return n.includes('pro') ? DEVICE_SERIES_IMAGES.IPHONE_PRO : DEVICE_SERIES_IMAGES.IPHONE_STD;
+    if (n.includes('fold') || n.includes('flip')) return DEVICE_SERIES_IMAGES.GALAXY_FOLD;
+    if (n.includes('galaxy s')) return DEVICE_SERIES_IMAGES.GALAXY_ULTRA;
+    if (n.includes('galaxy a')) return DEVICE_SERIES_IMAGES.GALAXY_MID;
+    if (n.includes('pixel')) return DEVICE_SERIES_IMAGES.PIXEL;
+    if (n.includes('rog') || n.includes('pova') || n.includes('poco f') || n.includes('gt')) return DEVICE_SERIES_IMAGES.GAMING_PHONE;
+    if (n.includes('xiaomi') || n.includes('redmi')) return DEVICE_SERIES_IMAGES.XIAOMI_PRO;
+    if (n.includes('find') || n.includes('x300') || n.includes('xperia')) return DEVICE_SERIES_IMAGES.ANDROID_FLAGSHIP;
+    return DEVICE_SERIES_IMAGES.ANDROID_MODERN;
+}
+
+// 3) Chuẩn hóa tên model 2026 sang tên dòng máy tương đương để tìm đúng ảnh sản phẩm thực tế
+function buildSearchQueries(p) {
+    const map2026 = {
+        'iphone 18 plus': 'iPhone 16 Plus',
+        'iphone 18': 'iPhone 16',
+        'iphone 17e': 'iPhone 16e',
+        'galaxy s26+': 'Samsung Galaxy S24 Plus',
+        'galaxy s26': 'Samsung Galaxy S24',
+        'galaxy s25 fe': 'Samsung Galaxy S24 FE',
+        'galaxy a57 5g': 'Samsung Galaxy A55',
+        'galaxy a37 5g': 'Samsung Galaxy A35',
+        'galaxy a17': 'Samsung Galaxy A15',
+        'galaxy a07': 'Samsung Galaxy A05',
+        'xiaomi 15t': 'Xiaomi 14T',
+        'redmi note 15 pro+': 'Redmi Note 13 Pro',
+        'redmi 15c': 'Redmi 13C',
+        'oppo find x9 pro': 'OPPO Find X7 Ultra',
+        'oppo find x9': 'OPPO Find X7',
+        'oppo reno15 pro 5g': 'OPPO Reno 12 Pro',
+        'oppo reno15 5g': 'OPPO Reno 12',
+        'oppo a6 pro': 'OPPO A3 Pro',
+        'vivo x300 pro': 'vivo X100 Pro',
+        'vivo x300': 'vivo X100',
+        'vivo v60 5g': 'vivo V40',
+        'vivo y400 5g': 'vivo Y200',
+        'vivo y29s': 'vivo Y28',
+        'asus rog phone 10 pro': 'ASUS ROG Phone 8 Pro',
+        'asus rog phone 10': 'ASUS ROG Phone 8',
+        'asus zenfone 13 ultra': 'ASUS Zenfone 11 Ultra',
+        'google pixel 11 pro xl': 'Google Pixel 9 Pro XL',
+        'google pixel 11 pro': 'Google Pixel 9 Pro',
+        'google pixel 11': 'Google Pixel 9',
+        'google pixel 10a': 'Google Pixel 8a',
+        'realme gt 8 pro': 'realme GT 5 Pro',
+        'realme 15 pro 5g': 'realme 12 Pro',
+        'realme 15 5g': 'realme 12',
+        'realme narzo 90x': 'realme Narzo 70x',
+        'realme c85': 'realme C65',
+        'poco f8 pro': 'POCO F6 Pro',
+        'poco f8': 'POCO F6',
+        'poco x8 pro': 'POCO X6 Pro',
+        'poco m8': 'POCO M6',
+        'infinix note 50 pro+': 'Infinix Note 40 Pro',
+        'infinix hot 60 pro': 'Infinix Hot 40 Pro',
+        'infinix smart 10': 'Infinix Smart 8',
+        'tecno phantom v fold3': 'Tecno Phantom V Fold',
+        'tecno camon 40 pro': 'Tecno Camon 30 Pro',
+        'tecno pova 7': 'Tecno Pova 6',
+        'tecno spark 40 pro': 'Tecno Spark 20 Pro',
+        'sony xperia 1 viii': 'Sony Xperia 1 VI',
+        'sony xperia 5 vii': 'Sony Xperia 5 V',
+        'sony xperia 10 vii': 'Sony Xperia 10 VI'
+    };
+    const key = p.name.toLowerCase().trim();
+    const mapped = map2026[key] || (normTxt(p.name).startsWith(normTxt(p.brandName)) ? p.name : `${p.brandName} ${p.name}`);
+    return [mapped, `${p.brandName} smartphone`];
+}
+
+// 4) Tìm ảnh từ Wikimedia Commons + Openverse API (kho ảnh mở chất lượng cao)
+async function searchRealProductImage(p) {
+    const queries = buildSearchQueries(p);
+    const primaryQuery = queries[0];
+
+    // Nguồn 1: Wikimedia Commons (ưu tiên ảnh chụp thực tế của đúng dòng máy)
+    try {
+        const r = await fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrlimit=8&gsrsearch=${encodeURIComponent(primaryQuery)}&prop=imageinfo&iiprop=url|mime&iiurlwidth=600&format=json&origin=*`);
+        const pages = Object.values(((await r.json()).query || {}).pages || {}).sort((a, b) => a.index - b.index);
+        for (const pg of pages) {
+            const ii = (pg.imageinfo || [])[0];
+            if (!ii || !/^image\/(jpeg|png|webp)$/.test(ii.mime)) continue;
+            if (/(logo|icon|diagram|map|screenshot|chart|vector)/i.test(pg.title)) continue;
+            return ii.thumburl || ii.url;
+        }
+    } catch (e) { }
+
+    // Nguồn 2: Openverse API (tìm ảnh sản phẩm điện thoại thực tế theo tên dòng máy)
+    try {
+        const r2 = await fetch(`https://api.openverse.org/v1/images/?q=${encodeURIComponent(primaryQuery)}&page_size=6`);
+        if (r2.ok) {
+            const data2 = await r2.json();
+            for (const item of (data2.results || [])) {
+                if (item.url && !/(logo|icon|banner)/i.test(item.title || '')) {
+                    return item.thumbnail || item.url;
+                }
+            }
+        }
+    } catch (e) { }
+
+    return getMatchedSeriesImage(p);
+}
+
+async function autoFindImages(force) {
+    const todo = appState.products.filter(p => force || !p.imgV2 || String(p.image).startsWith('data:image/svg'));
+    if (!todo.length) return { found: 0, total: 0 };
+    let found = 0, i = 0, net = true;
+
+    const worker = async () => {
+        while (i < todo.length) {
+            const p = todo[i++];
+            try {
+                p.image = await searchRealProductImage(p);
+                p.imgV2 = true;
+                found++;
+            } catch (e) {
+                net = false;
+                p.image = getMatchedSeriesImage(p);
+            }
+        }
+    };
+
+    await Promise.all([worker(), worker(), worker(), worker(), worker()]);
+    try { persistData(); } catch (e) { }
+    return { found, total: todo.length, net };
+}
+
+const _rap3 = renderAdminProducts;
+renderAdminProducts = function () {
+    _rap3();
+    const b = document.querySelector('#admin-content-area button[onclick="openProductForm()"]');
+    if (b) b.insertAdjacentHTML('beforebegin', `<button onclick="runAutoImages()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs"><i class="fa-solid fa-wand-magic-sparkles"></i> Tìm & gắn ảnh cho tất cả SP</button>`);
+};
+
+async function runAutoImages() {
+    showToast("Đang tìm ảnh thực tế cho từng dòng điện thoại...");
+    const r = await autoFindImages(true);
+    applyFilters();
+    showToast(`Đã tìm và gắn ảnh xong cho ${r.found}/${r.total} sản phẩm!`);
+}
+
+// Nếu link ảnh nào bị lỗi tải, tự chuyển sang ảnh đúng dòng máy
+document.addEventListener('error', e => {
+    const t = e.target;
+    if (t.tagName !== 'IMG' || t.dataset.fb || !t.alt) return;
+    t.dataset.fb = 1;
+    const p = appState.products.find(x => x.name === t.alt);
+    t.src = p ? getMatchedSeriesImage(p) : DEVICE_SERIES_IMAGES.ANDROID_MODERN;
+}, true);
+
+// Tự động chạy ngay khi mở trang để thay toàn bộ ảnh cũ bằng ảnh đúng dòng máy
+setTimeout(() => {
+    autoFindImages(false).then(r => {
+        if (r && r.found > 0) {
+            applyFilters();
+            showToast(`Đã tự động cập nhật ảnh cho ${r.found} sản phẩm!`);
+        }
+    });
+}, 300);
+
+renderAdminProducts();
+</script>
